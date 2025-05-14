@@ -112,7 +112,7 @@ export class ConfigFactory {
   /**
    * @note 非必填, 第三方模型才需要使用, 用火山方舟模型时无需关注。
    */
-  APIKey? = '';
+  APIKey? = '96d4c912-b63a-4d68-b606-1b629dc46221';
 
   /**
    * @brief AI Robot 名
