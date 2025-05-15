@@ -59,12 +59,12 @@ export class ConfigFactory {
      * @brief 必填, TTS(语音合成) AppId, 可于 https://console.volcengine.com/speech/app?s=g 中获取, 若无可先创建应用。
      * @note 创建应用时, 需要选择 "语音合成" 服务, 并选择对应的 App 进行绑定。
      */
-    TTSAppId: '1152151565',
+    TTSAppId: '5243210320',
     /**
      * @brief 已开通需要的语音合成服务的token。
      *        使用火山引擎双向流式语音合成服务时 必填。
      */
-    TTSToken: undefined,
+    TTSToken: "wBWgJatr2OSF7BiXaRxy6clcD-ZDSWMn",
     /**
      * @brief 必填, ASR(语音识别) AppId, 可于 https://console.volcengine.com/speech/app?s=g 中获取, 若无可先创建应用。
      * @note 创建应用时, 需要按需根据语言选择 "流式语音识别" 服务, 并选择对应的 App 进行绑定。
@@ -108,11 +108,13 @@ export class ConfigFactory {
    * @note 非必填, 第三方模型才需要使用, 用火山方舟模型时无需关注。
    */
   Url? = '';
+  // "https://ark.cn-beijing.volces.com/api/v3";
 
   /**
    * @note 非必填, 第三方模型才需要使用, 用火山方舟模型时无需关注。
    */
-  APIKey? = '96d4c912-b63a-4d68-b606-1b629dc46221';
+  APIKey? = '';
+  // '96d4c912-b63a-4d68-b606-1b629dc46221';
 
   /**
    * @brief AI Robot 名
