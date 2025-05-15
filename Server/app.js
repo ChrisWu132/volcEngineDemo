@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 /**
  * Copyright 2025 Beijing Volcano Engine Technology Co., Ltd. All Rights Reserved.
  * SPDX-license-identifier: BSD-3-Clause
@@ -22,11 +24,11 @@ const ACCOUNT_INFO = {
   /**
    * @notes 必填, 在 https://console.volcengine.com/iam/keymanage/ 获取
    */
-  accessKeyId: 'AKLTNTZhMGZmNzU5YWY4NDI5Nzg0ZjE3ODI0Njk2YWQzNmY',
+  accessKeyId: process.env.VOLC_ACCESS_KEY_ID,
   /**
    * @notes 必填, 在 https://console.volcengine.com/iam/keymanage/ 获取
    */
-  secretKey: 'TW1ObU0yUTRZekF4WTJNeE5HVmpaRGhqT1RnMllUQmhPR1JsTjJJelpHUQ==',
+  secretKey: process.env.VOLC_SECRET_KEY,
 }
 
 app.use(bodyParser());
