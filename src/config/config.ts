@@ -32,7 +32,7 @@ export class ConfigFactory {
     /**
      * @note 必填, RTC AppId 可于 https://console.volcengine.com/rtc/listRTC?s=g 中获取。
      */
-    AppId: 'Your RTC AppId',
+    AppId: '6821c034a46025017cfb7ba3',
     /**
      * @brief 非必填, 按需填充。
      */
@@ -54,12 +54,12 @@ export class ConfigFactory {
      *        建议先使用临时 Token 尝试跑通。
      * @note 生成临时 Token 时, 页面上的 RoomId / UserId 填的与此处的 RoomId / UserId 保持一致。
      */
-    Token: 'Your RTC Token',
+    Token: '0016821c034a46025017cfb7ba3RAA3qqQEO+kiaLsjLGgHAFJvb20xMjMHAFVzZXIxMjMGAAAAuyMsaAEAuyMsaAIAuyMsaAMAuyMsaAQAuyMsaAUAuyMsaCAAAhkF0YH7Yt0R78ilgOeGwNAg8B7u4PV2nW3s8zndGZg=',
     /**
      * @brief 必填, TTS(语音合成) AppId, 可于 https://console.volcengine.com/speech/app?s=g 中获取, 若无可先创建应用。
      * @note 创建应用时, 需要选择 "语音合成" 服务, 并选择对应的 App 进行绑定。
      */
-    TTSAppId: 'Your TTS AppId',
+    TTSAppId: '1152151565',
     /**
      * @brief 已开通需要的语音合成服务的token。
      *        使用火山引擎双向流式语音合成服务时 必填。
@@ -69,7 +69,7 @@ export class ConfigFactory {
      * @brief 必填, ASR(语音识别) AppId, 可于 https://console.volcengine.com/speech/app?s=g 中获取, 若无可先创建应用。
      * @note 创建应用时, 需要按需根据语言选择 "流式语音识别" 服务, 并选择对应的 App 进行绑定。
      */
-    ASRAppId: 'Your ASR AppId',
+    ASRAppId: '5243210320',
     /**
      * @brief 已开通流式语音识别大模型服务 AppId 对应的 Access Token。
      * @note 使用流式语音识别 **大模型** 服务时必填, 可于 https://console.volcengine.com/speech/service/10011?AppID=6482372612&s=g 中查看。

@@ -22,11 +22,11 @@ const ACCOUNT_INFO = {
   /**
    * @notes 必填, 在 https://console.volcengine.com/iam/keymanage/ 获取
    */
-  accessKeyId: 'Your AK',
+  accessKeyId: 'AKLTNTZhMGZmNzU5YWY4NDI5Nzg0ZjE3ODI0Njk2YWQzNmY',
   /**
    * @notes 必填, 在 https://console.volcengine.com/iam/keymanage/ 获取
    */
-  secretKey: 'Your SK',
+  secretKey: 'TW1ObU0yUTRZekF4WTJNeE5HVmpaRGhqT1RnMllUQmhPR1JsTjJJelpHUQ==',
 }
 
 app.use(bodyParser());

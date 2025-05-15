@@ -4,9 +4,9 @@
   "license": "BSD-3-Clause",
   "private": true,
   "dependencies": {
+    "@arco-design/web-react": "^2.65.0",
     "@reduxjs/toolkit": "^1.8.3",
     "@volcengine/rtc": "4.66.1",
-    "@arco-design/web-react": "^2.65.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-helmet": "^6.1.0",
