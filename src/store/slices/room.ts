@@ -104,7 +104,7 @@ export interface RoomState {
 
 const initialState: RoomState = {
   time: -1,
-  scene: SCENE.INTELLIGENT_ASSISTANT,
+  scene: SCENE.MONDI_COUNSELOR,
   remoteUsers: [],
   localUser: {
     publishAudio: false,

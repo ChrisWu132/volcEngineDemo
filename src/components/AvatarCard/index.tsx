@@ -8,9 +8,10 @@ import { Button } from '@arco-design/web-react';
 import { useState } from 'react';
 import AISettings from '../AISettings';
 import style from './index.module.less';
-import DouBaoAvatar from '@/assets/img/DoubaoAvatarGIF.webp';
+
 import { RootState } from '@/store';
-import { MODEL_MODE, Name, VOICE_TYPE } from '@/config';
+import { MODEL_MODE, Name, VOICE_TYPE } from '@/config'; 
+import MONDI_COUNSELOR from '@/assets/img/MONDI_COUNSELOR.png';// 此处可以换成gif
 
 interface IAvatarCardProps extends React.HTMLAttributes<HTMLDivElement> {
   avatar?: string;
@@ -46,7 +47,7 @@ function AvatarCard(props: IAvatarCardProps) {
       <div className={style.avatar}>
         <img
           id="avatar-card"
-          src={avatar || DouBaoAvatar}
+          src={avatar || MONDI_COUNSELOR}
           className={style['doubao-gif']}
           alt="Avatar"
         />

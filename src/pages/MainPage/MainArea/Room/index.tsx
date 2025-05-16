@@ -10,12 +10,12 @@ import CameraArea from './CameraArea';
 import AudioController from './AudioController';
 import utils from '@/utils/utils';
 import style from './index.module.less';
-import DoubaoAvatar from '@/assets/img/DoubaoAvatar.png';
+import MONDI_COUNSELOR from '@/assets/img/MONDI_COUNSELOR.png';
 
 function Room() {
   return (
     <div className={`${style.wrapper} ${utils.isMobile() ? style.mobile : ''}`}>
-      <AvatarCard avatar={DoubaoAvatar} className={style.avatar} />
+      <AvatarCard avatar={MONDI_COUNSELOR} className={style.avatar} />
       {utils.isMobile() ? null : <CameraArea />}
       <Conversation className={style.conversation} />
       <ToolBar className={style.toolBar} />

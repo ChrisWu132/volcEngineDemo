@@ -79,24 +79,24 @@ export class ConfigFactory {
     ASRToken: undefined,
   };
 
-  Model: AI_MODEL = Model[SCENE.INTELLIGENT_ASSISTANT];
+  Model: AI_MODEL = Model[SCENE.MONDI_COUNSELOR];
 
   /**
    * @note 必填, 音色 ID, 可具体看定义。
    *       音色 ID 获取方式可查看 VOICE_TYPE 定义
    *       此处已有默认值, 不影响跑通, 可按需修改。
    */
-  VoiceType = Voice[SCENE.INTELLIGENT_ASSISTANT];
+  VoiceType = Voice[SCENE.MONDI_COUNSELOR];
 
   /**
    * @note 大模型 System 角色预设指令, 可用于控制模型输出, 类似 Prompt 的概念。
    */
-  Prompt = Prompt[SCENE.INTELLIGENT_ASSISTANT];
+  Prompt = Prompt[SCENE.MONDI_COUNSELOR];
 
   /**
    * @note 智能体启动后的欢迎词。
    */
-  WelcomeSpeech = Welcome[SCENE.INTELLIGENT_ASSISTANT];
+  WelcomeSpeech = Welcome[SCENE.MONDI_COUNSELOR];
 
   /**
    * @note 当前使用的模型来源, 具体可参考 MODEL_MODE 定义。

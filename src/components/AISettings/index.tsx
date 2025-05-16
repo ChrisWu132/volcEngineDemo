@@ -45,13 +45,6 @@ export interface IAISettingsProps {
 const RadioGroup = Radio.Group;
 
 const SCENES = [
-  SCENE.INTELLIGENT_ASSISTANT,
-  SCENE.SCREEN_READER,
-  SCENE.VIRTUAL_GIRL_FRIEND,
-  SCENE.TRANSLATE,
-  SCENE.CHILDREN_ENCYCLOPEDIA,
-  SCENE.CUSTOMER_SERVICE,
-  SCENE.TEACHING_ASSISTANT,
   SCENE.MONDI_COUNSELOR,
   SCENE.MONDI_SOUL_CABIN,
   SCENE.CUSTOM,
@@ -148,19 +141,10 @@ function AISettings({ open, onCancel, onOk }: IAISettingsProps) {
     dispatch(updateAIConfig(Config.aigcConfig));
 
     if (isVisionMode(data.model)) {
-      switch (scene) {
-        case SCENE.SCREEN_READER:
-          /** 关摄像头，打开屏幕采集 */
-          room.isJoined && isVideoPublished && switchCamera();
-          Config.VisionSourceType = StreamIndex.STREAM_INDEX_SCREEN;
-          break;
-        default:
-          /** 关屏幕采集，打开摄像头 */
-          room.isJoined && !isVideoPublished && switchCamera();
-          room.isJoined && isScreenPublished && switchScreenCapture();
-          Config.VisionSourceType = StreamIndex.STREAM_INDEX_MAIN;
-          break;
-      }
+      /** 关屏幕采集，打开摄像头 */
+      room.isJoined && !isVideoPublished && switchCamera();
+      room.isJoined && isScreenPublished && switchScreenCapture();
+      Config.VisionSourceType = StreamIndex.STREAM_INDEX_MAIN;
     } else {
       /** 全关 */
       room.isJoined && isVideoPublished && switchCamera();
@@ -218,9 +202,6 @@ function AISettings({ open, onCancel, onOk }: IAISettingsProps) {
           key ? (
             <CheckIcon
               key={key}
-              tag={
-                [SCENE.TEACHING_ASSISTANT, SCENE.SCREEN_READER].includes(key) ? '视觉理解模型' : ''
-              }
               icon={Icon[key as keyof typeof Icon]}
               title={Name[key as keyof typeof Name]}
               checked={key === scene}
