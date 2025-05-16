@@ -3,7 +3,6 @@
  * SPDX-license-identifier: BSD-3-Clause
  */
 
-import VERTC from '@volcengine/rtc';
 import { useEffect, useState } from 'react';
 import { Tooltip, Typography } from '@arco-design/web-react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -16,7 +15,6 @@ import { COMMAND, INTERRUPT_PRIORITY } from '@/utils/handler';
 import CameraArea from '../MainArea/Room/CameraArea';
 import { setHistoryMsg, setInterruptMsg } from '@/store/slices/room';
 import utils from '@/utils/utils';
-import packageJson from '../../../../package.json';
 import styles from './index.module.less';
 
 function Menu() {
@@ -55,8 +53,6 @@ function Menu() {
         </div>
       ) : null}
       <div className={`${styles.box} ${styles.info}`}>
-        <div className={styles.bold}>Demo Version {packageJson.version}</div>
-        <div className={styles.bold}>SDK Version {VERTC.getSdkVersion()}</div>
         {isJoined ? (
           <div className={styles.gray}>
             房间ID{' '}

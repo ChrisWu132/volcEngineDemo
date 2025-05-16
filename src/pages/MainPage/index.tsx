@@ -3,7 +3,6 @@
  * SPDX-license-identifier: BSD-3-Clause
  */
 
-import Header from '@/components/Header';
 import ResizeWrapper from '@/components/ResizeWrapper';
 import Menu from './Menu';
 import utils from '@/utils/utils';
@@ -13,7 +12,6 @@ import styles from './index.module.less';
 export default function () {
   return (
     <ResizeWrapper className={styles.container}>
-      <Header />
       <div
         className={styles.main}
         style={{
