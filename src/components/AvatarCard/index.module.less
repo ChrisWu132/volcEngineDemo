@@ -140,55 +140,37 @@
 }
 
 .settingsCard {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    z-index: 10;
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
 }
 
 .button {
-    width: auto;
-    padding: 6px 12px;
-    border-radius: 12px;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    background: rgba(255, 255, 255, 0.4);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    text-align: center;
-    
-    &:hover {
-        background: rgba(255, 255, 255, 0.6);
-        border-color: rgba(255, 255, 255, 0.25);
-    }
-}
+    position: relative;
+    width: max-content !important;
+    height: 36px !important;
+    border-radius: 20px !important;
+    font-size: 15px !important;
+    background: rgba(255, 255, 255, 0.5) !important;
+    backdrop-filter: blur(4px);
+    cursor: pointer;
+    padding: 0 16px !important;
+    border: 1px solid rgba(255, 255, 255, 0.6) !important;
 
-.button-text {
-    font-family: PingFang SC;
-    font-size: 13px;
-    font-weight: 500;
-    line-height: 20px;
-    color: rgba(255, 255, 255, 0.9);
-}
-
-/* iPad 设备适配 */
-@media only screen and (min-width: 744px) and (max-width: 1366px) {
-    .settingsCard {
-        top: 16px;
-        right: 16px;
-    }
-    
-    .button {
-        padding: 8px 18px;
-        border-radius: 16px;
-        border-width: 1.5px;
-    }
-    
     .button-text {
-        font-size: 16px;
+        color: #2F3E5C;
+        font-weight: 500;
         line-height: 24px;
-        font-weight: 600;
+        text-align: center;
     }
+}
+
+.button:hover {
+    background: rgba(255, 255, 255, 0.6) !important;
+}
+
+.button:active {
+    background: rgba(255, 255, 255, 0.7) !important;
 }
