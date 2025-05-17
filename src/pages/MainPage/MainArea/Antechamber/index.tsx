@@ -37,23 +37,28 @@ function Antechamber() {
       </div>
       
       <div className={style.contentContainer}>
-        <div className={style.greeting}>
-          <div className={style.hello}>你好，</div>
-          <div className={style.goodMorning}>早上好</div>
+        {/* 顶部区域 - 问候语 */}
+        <div className={style.topSection}>
+          <div className={style.hello}>你好！</div>
         </div>
         
-        <div className={style.robotContainer}>
-          <img src={RobotImage} alt="机器人" className={style.robot} />
+        {/* 中部区域 - 仅包含机器人 */}
+        <div className={style.middleSection}>
+          <div className={style.robotContainer}>
+            <img src={RobotImage} alt="机器人" className={style.robot} />
+          </div>
         </div>
         
-        <div className={style.botInfo}>
-          <div className={style.botName}>蒙迪</div>
-          <div className={style.botDescription}>一个能让科学变得有趣并回答好奇问题的聪明机器人</div>
+        {/* 底部区域 - 标题、副标题和按钮 */}
+        <div className={style.bottomSection}>
+          <div className={style.botInfo}>
+            <div className={style.botName}>蒙迪</div>
+            <div className={style.botDescription}>一个懂你的机器人</div>
+          </div>
+          
+          <InvokeButton onClick={handleJoinRoom} loading={joining} className={style['invoke-btn']} />
+          <AvatarCard className={`${style.avatar} ${Utils.isMobile() ? style.mobile : ''}`} />
         </div>
-        
-        <InvokeButton onClick={handleJoinRoom} loading={joining} className={style['invoke-btn']} />
-        
-        <AvatarCard className={`${style.avatar} ${Utils.isMobile() ? style.mobile : ''}`} />
       </div>
     </div>
   );

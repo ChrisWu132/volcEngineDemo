@@ -32,158 +32,245 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    justify-content: space-between; /* 确保子元素分布在容器的整个高度 */
     z-index: 2;
-    padding: 40px 20px;
+    padding: 0;
     box-sizing: border-box;
-    overflow-y: auto;
+    overflow: hidden;
 }
 
-.greeting {
-    text-align: center;
-    margin-bottom: 20px;
-    margin-top: 30px;
-}
-
-.hello {
-    font-family: 'PingFang SC', sans-serif;
-    font-size: 32px;
-    font-weight: 600;
-    color: #1E293B;
-    line-height: 1.2;
-}
-
-.goodMorning {
-    font-family: 'PingFang SC', sans-serif;
-    font-size: 46px;
-    font-weight: 700;
-    font-style: italic;
-    color: #1E293B;
-    line-height: 1.2;
-    margin-top: 8px;
-}
-
-.robotContainer {
-    width: 240px;
-    height: 240px;
-    margin: 20px 0 30px;
+/* 顶部区域 */
+.topSection {
+    width: 100%;
+    padding-top: min(8vh, 40px); /* 使用vh单位，但限制最大值 */
+    padding-bottom: min(2vh, 10px);
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.robot {
-    max-width: 100%;
+.hello {
+    font-family: 'STKaiti', 'KaiTi', 'PingFang SC', sans-serif;
+    font-size: clamp(28px, 5vmin, 42px); /* 使用vmin单位，适应屏幕宽高的较小值 */
+    font-weight: 600;
+    color: #1E293B;
+    text-align: center;
+    text-shadow: 2px 2px 3px rgba(255, 255, 255, 0.6);
+    letter-spacing: 2px;
+    transform: scale(1.05, 1);
+    font-style: italic;
+}
+
+/* 中部区域 - 机器人 */
+.middleSection {
+    width: 100%;
+    flex: 1;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 30vh; /* 确保最小高度 */
+    max-height: 50vh; /* 限制最大高度 */
+    margin-top: min(2vh, 10px);
+    margin-bottom: min(3vh, 15px);
+}
+
+.robotContainer {
+    width: min(55%, 380px); /* 限制最大宽度 */
     max-height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: translateY(12%); /* 稍微下移，但不用绝对定位 */
+}
+
+.robot {
+    width: 100%;
+    height: auto;
     object-fit: contain;
+    max-height: 100%;
+}
+
+/* 底部区域 - 标题、副标题和按钮 */
+.bottomSection {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-bottom: min(10vh, 50px); /* 使用vh单位，但限制最大值 */
 }
 
 .botInfo {
     text-align: center;
-    margin-bottom: 40px;
+    width: 100%;
+    margin-bottom: min(4vh, 20px);
 }
 
 .botName {
     font-family: 'PingFang SC', sans-serif;
-    font-size: 44px;
+    font-size: clamp(28px, 5vmin, 44px);
     font-weight: 700;
     color: #1E293B;
-    margin-bottom: 16px;
+    margin-bottom: min(1.5vh, 8px);
 }
 
 .botDescription {
     font-family: 'PingFang SC', sans-serif;
-    font-size: 16px;
+    font-size: clamp(14px, 2.5vmin, 18px);
     font-weight: 400;
     color: #334155;
-    max-width: 400px;
+    max-width: 80%;
     margin: 0 auto;
-    line-height: 1.5;
+    line-height: 1.4;
 }
 
 .invoke-btn {
-    margin: 30px 0 24px;
-    transform: scale(1.1);
+    margin-bottom: min(2vh, 12px);
+    width: min(65%, 280px);
 }
 
 .avatar {
-    margin-top: 16px;
-    margin-bottom: 30px;
-    width: 280px !important;
+    margin-top: min(1vh, 6px);
+    background: none !important;
+    backdrop-filter: none !important;
+    border: none !important;
+    padding: 0 !important;
+    width: auto !important;
+    max-width: min(70%, 260px);
+    opacity: 0.85;
 }
 
 .mobile {
     transform: none !important;
 }
 
-/* Media queries for responsive design */
+/* 媒体查询 - 根据高度调整 */
 @media screen and (max-height: 700px) {
-    .greeting {
-        margin-top: 10px;
-        margin-bottom: 10px;
+    .topSection {
+        padding-top: min(6vh, 30px);
+        padding-bottom: min(1vh, 5px);
+    }
+
+    .hello {
+        font-size: clamp(24px, 4.5vmin, 36px);
+    }
+    
+    .middleSection {
+        min-height: 25vh;
+        margin-top: 0;
+        margin-bottom: 0;
     }
     
     .robotContainer {
-        width: 180px;
-        height: 180px;
-        margin: 10px 0 15px;
+        width: min(50%, 320px);
+        transform: translateY(5%);
     }
     
-    .hello {
-        font-size: 28px;
-    }
-    
-    .goodMorning {
-        font-size: 38px;
-        margin-top: 4px;
+    .botInfo {
+        margin-bottom: min(2vh, 12px);
     }
     
     .botName {
-        font-size: 36px;
-        margin-bottom: 10px;
+        font-size: clamp(24px, 4.5vmin, 36px);
+        margin-bottom: min(1vh, 6px);
     }
     
     .botDescription {
-        font-size: 14px;
+        font-size: clamp(12px, 2vmin, 16px);
     }
     
     .invoke-btn {
-        margin: 20px 0 20px;
-        transform: scale(1);
-    }
-    
-    .avatar {
-        margin-top: 10px;
-        margin-bottom: 20px;
+        margin-bottom: min(1.5vh, 8px);
     }
 }
 
-@media screen and (max-width: 480px) {
-    .contentContainer {
-        padding: 20px 16px;
+/* 媒体查询 - 更小的屏幕高度 */
+@media screen and (max-height: 600px) {
+    .topSection {
+        padding-top: min(4vh, 20px);
     }
-    
+
     .hello {
-        font-size: 24px;
+        font-size: clamp(22px, 4vmin, 32px);
+        letter-spacing: 1px;
     }
     
-    .goodMorning {
-        font-size: 32px;
+    .middleSection {
+        min-height: 20vh;
+    }
+    
+    .robotContainer {
+        width: min(45%, 280px);
     }
     
     .botName {
-        font-size: 32px;
+        font-size: clamp(22px, 4vmin, 32px);
     }
     
     .botDescription {
-        font-size: 14px;
+        font-size: clamp(11px, 1.8vmin, 14px);
+        max-width: 90%;
+    }
+}
+
+/* 媒体查询 - 宽屏幕 */
+@media screen and (min-aspect-ratio: 16/9) {
+    .robotContainer {
+        width: min(35%, 300px);
+    }
+    
+    .middleSection {
+        max-height: 40vh;
+    }
+}
+
+/* 媒体查询 - 窄屏幕 */
+@media screen and (max-width: 480px) {
+    .hello {
+        font-size: clamp(22px, 4vmin, 34px);
+    }
+    
+    .robotContainer {
+        width: min(60%, 300px);
+    }
+    
+    .botName {
+        font-size: clamp(24px, 4.5vmin, 34px);
+    }
+    
+    .botDescription {
+        font-size: clamp(12px, 2.2vmin, 16px);
+        max-width: 85%;
     }
     
     .invoke-btn {
-        transform: scale(0.9);
+        width: min(75%, 280px);
     }
     
     .avatar {
-        width: 100% !important;
+        max-width: min(80%, 240px);
+    }
+}
+
+/* iPad 设备适配 */
+@media only screen and (min-width: 744px) and (max-width: 1024px) {
+    .invoke-btn {
+        width: min(75%, 320px);
+    }
+
+    .avatar {
+        max-width: min(80%, 300px);
+    }
+}
+
+/* iPad Pro 大屏适配 */
+@media only screen and (min-width: 1025px) and (max-width: 1366px) {
+    .invoke-btn {
+        width: min(70%, 340px);
+    }
+
+    .avatar {
+        max-width: min(75%, 320px);
     }
 }

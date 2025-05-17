@@ -11,14 +11,14 @@
     justify-content: center;
 
     .btn {
-        width: 220px;
-        height: 56px;
-        border-radius: 28px;
+        width: 100%;
+        height: 52px;
+        border-radius: 30px;
         display: flex;
         justify-content: center;
         align-items: center;
-        background: linear-gradient(90deg, #304675 0%, #4C4789 50%, #5D3A95 100%);
-        box-shadow: 0px 8px 20px rgba(73, 58, 144, 0.5);
+        background: #2F3E5C; /* 深蓝色 */
+        box-shadow: 0px 4px 10px rgba(47, 62, 92, 0.4);
         transition: all 0.2s ease-in-out;
         
         .icon {
@@ -45,15 +45,15 @@
 }
 
 .cursor:hover .btn {
-    background: linear-gradient(90deg, #3B558E 0%, #5E57A8 50%, #714CB4 100%);
-    box-shadow: 0px 10px 25px rgba(93, 78, 172, 0.6);
-    transform: translateY(-2px);
+    background: #3B4B6E;
+    box-shadow: 0px 6px 12px rgba(59, 75, 110, 0.5);
+    transform: translateY(-1px);
     transition: all 0.2s ease;
 }
 
 .cursor:active .btn {
-    background: linear-gradient(90deg, #263862 0%, #403975 50%, #4D2E7C 100%);
-    box-shadow: 0px 4px 12px rgba(60, 48, 113, 0.4);
+    background: #263145;
+    box-shadow: 0px 2px 6px rgba(38, 49, 69, 0.5);
     transform: translateY(1px);
     transition: all 0.1s ease;
 }
@@ -72,8 +72,8 @@
 }
 
 .dot {
-    width: 8px;
-    height: 8px;
+    width: 6px;
+    height: 6px;
     border-radius: 50%;
     background-color: white;
     animation: glow 0.9s infinite;
@@ -88,5 +88,30 @@
     }
     100% {
         opacity: 0.3;
+    }
+}
+
+/* iPad 设备适配 */
+@media only screen and (min-width: 744px) and (max-width: 1366px) {
+    .btn {
+        height: 70px;
+        border-radius: 35px;
+        box-shadow: 0px 6px 15px rgba(47, 62, 92, 0.5);
+        
+        .buttonText {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+    }
+    
+    .text {
+        font-size: 16px;
+        margin-top: 14px;
+    }
+    
+    .cursor:hover .btn {
+        transform: translateY(-2px);
+        box-shadow: 0px 8px 16px rgba(59, 75, 110, 0.6);
     }
 }

@@ -140,66 +140,55 @@
 }
 
 .settingsCard {
-    display: flex;
-    position: relative;
-    justify-content: center;
-    align-items: center;
-    padding: 8px;
-    background-color: rgba(255, 255, 255, 0.3);
-    backdrop-filter: blur(8px);
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.4);
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 10;
 }
 
 .button {
-    position: relative;
-    width: max-content !important;
-    height: 32px !important;
-    border-radius: 8px !important;
-    font-size: 14px !important;
-    background: linear-gradient(77.86deg, rgba(229, 242, 255, 0.5) -3.23%, rgba(217, 229, 255, 0.5) 51.11%, rgba(246, 226, 255, 0.5) 98.65%);
-    cursor: pointer;
-    padding: 0 16px !important;
-
-    .button-text {
-        background: linear-gradient(77.86deg, #3384FF -3.23%, #014BDE 51.11%, #A945FB 98.65%);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-        font-weight: 500;
-        line-height: 24px;
-        text-align: center;
+    width: auto;
+    padding: 6px 12px;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    text-align: center;
+    
+    &:hover {
+        background: rgba(255, 255, 255, 0.6);
+        border-color: rgba(255, 255, 255, 0.25);
     }
 }
 
-.button::after {
-    content: '';
-    position: absolute;
-    border-radius: 7px;
-    top: 0px;
-    left: 0px;
-    width: 100%;
-    height: 30px;
-    background: rgba(255, 255, 255, 0.85);
-    z-index: -1;
+.button-text {
+    font-family: PingFang SC;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 20px;
+    color: rgba(255, 255, 255, 0.9);
 }
 
-.button::before {
-    content: '';
-    position: absolute;
-    border-radius: 9px;
-    top: -2px;
-    left: -2px;
-    width: calc(100% + 4px);
-    height: 34px;
-    background: linear-gradient(90deg, rgba(0, 139, 255, 0.5) 0%, rgba(0, 98, 255, 0.5) 49.5%, rgba(207, 92, 255, 0.5) 100%);
-    z-index: -2;
-}
-
-.button:hover {
-    background: linear-gradient(77.86deg, rgba(200, 220, 255, 0.7) -3.23%, rgba(190, 210, 255, 0.7) 51.11%, rgba(230, 210, 255, 0.7) 98.65%);
-}
-
-.button:active {
-    background: linear-gradient(77.86deg, rgba(170, 190, 255, 0.9) -3.23%, rgba(160, 180, 255, 0.9) 51.11%, rgba(210, 180, 255, 0.9) 98.65%);
+/* iPad 设备适配 */
+@media only screen and (min-width: 744px) and (max-width: 1366px) {
+    .settingsCard {
+        top: 16px;
+        right: 16px;
+    }
+    
+    .button {
+        padding: 8px 18px;
+        border-radius: 16px;
+        border-width: 1.5px;
+    }
+    
+    .button-text {
+        font-size: 16px;
+        line-height: 24px;
+        font-weight: 600;
+    }
 }
