@@ -5,8 +5,6 @@
 
 import Loading from './loading';
 import style from './index.module.less';
-import CallButtonSVG from '@/assets/img/CallWrapper.svg';
-import PhoneSVG from '@/assets/img/Phone.svg';
 
 interface IInvokeButtonProps extends React.HTMLAttributes<HTMLDivElement> {
   loading?: boolean;
@@ -18,14 +16,13 @@ function InvokeButton(props: IInvokeButtonProps) {
   return (
     <div className={`${style.wrapper} ${loading ? '' : style.cursor} ${className}`} {...rest}>
       <div className={style.btn}>
-        <img src={CallButtonSVG} alt="call" />
         {loading ? (
           <Loading className={style.icon} />
         ) : (
-          <img src={PhoneSVG} className={style.icon} alt="phone" />
+          <div className={style.buttonText}>点击开始通话</div>
         )}
       </div>
-      <div className={style.text}>{loading ? '连接中' : '通话'}</div>
+      <div className={style.text}>{loading ? '连接中' : ''}</div>
     </div>
   );
 }

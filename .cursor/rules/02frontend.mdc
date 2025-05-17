@@ -4,142 +4,160 @@ globs:
 alwaysApply: false
 ---
 # Cursor Context Rules: rtc-aigc-demo Frontend
+Answer
+我将为您提供一个更详细的文件结构分析，以文字形式展示这个RTC-AIGC演示应用的前端组织结构。
 
-This document provides contextual information about the frontend architecture of the `rtc-aigc-demo` project. It is intended to help AI assistants understand the project's structure, key components, data flow, and important terminology.
+项目文件结构概览
+这个项目是一个基于React的前端应用，主要实现了RTC（实时通信）与AIGC（AI生成内容）的结合。以下是主要文件结构：
 
-## 1. Project Overview
+1. 主要页面组件
+src/pages/MainPage/index.tsx - 主页面容器组件
+这是整个应用的主入口页面，包含了MainArea和Menu两个主要子组件
+src/pages/MainPage/MainArea/index.tsx - 主内容区域组件
+包含了AvatarCard和Room组件
+负责显示AI头像和视频通话区域
+src/pages/MainPage/Menu/index.tsx - 菜单组件
+显示系统信息、预定义问题和操作按钮
+包含版本信息、房间ID和预设问题列表 index.tsx:50-56
+2. 核心功能组件
+2.1 AI相关组件
+src/components/AvatarCard/index.tsx - AI头像卡片组件
+显示AI头像图片
+显示当前AI配置信息（场景、声音类型、模型信息）
+包含"修改AI设定"按钮，打开AISettings抽屉 index.tsx:43-48
+src/components/AISettings/index.tsx - AI设置组件
+实现为一个抽屉式界面
+包含场景选择、模型模式选择、音色选择等配置项
+提供系统Prompt和欢迎语的自定义功能 index.tsx:184-192
+src/components/CheckIcon/index.tsx - 场景选择图标组件
+用于AISettings中的场景选择
+显示场景图标、名称和选中状态
+src/components/TitleCard/index.tsx - 标题卡片组件
+用于AISettings中各配置区域的标题展示
+提供统一的标题样式
+src/components/CheckBoxSelector/index.tsx - 复选框选择器组件
+用于AISettings中的音色选择和模型选择
+提供带图标和描述的选择界面
+2.2 视频相关组件
+src/pages/MainPage/MainArea/Room/index.tsx - 房间组件
+管理视频通话房间的状态和布局
+包含CameraArea组件
+src/pages/MainPage/MainArea/Room/CameraArea.tsx - 摄像头区域组件
+显示本地摄像头或屏幕共享内容
+提供摄像头/屏幕共享控制功能
+src/pages/MainPage/Menu/components/Operation.tsx - 操作组件
+提供麦克风、摄像头、屏幕共享等控制按钮
+位于Menu组件底部
+3. 配置和工具文件
+src/config/common.ts - 通用配置文件
+定义了场景(SCENE)、模型模式(MODEL_MODE)、AI模型(AI_MODEL)等枚举
+包含音色类型(VOICE_TYPE)和音色信息映射(VOICE_INFO_MAP)
+定义了各场景的默认提示语(Prompt)、欢迎语(Welcome)、模型(Model)和音色(Voice) common.ts:33-56
+src/config/config.ts - 配置工厂类
+实现了ConfigFactory类，用于生成AI配置
+包含LLMConfig、ASRConfig、TTSConfig等配置生成方法
+提供aigcConfig方法，整合所有配置 config.ts:224-243
+src/utils/utils.ts - 工具函数文件
+包含isMobile()等实用函数
+提供各种辅助功能
+src/utils/handler.ts - 处理器文件
+定义了COMMAND和INTERRUPT_PRIORITY等常量
+用于处理AI命令和中断优先级
+4. 状态管理文件
+src/store/index.ts - Redux存储根文件
+配置Redux存储
+组合所有reducer
+src/store/slices/room.ts - 房间状态切片
+管理房间状态，包括场景、模型模式、AI配置等
+提供updateScene、updateModelMode、updateAIConfig等action
+src/lib/RtcClient.ts - RTC客户端类
+封装了与RTC服务的交互
+提供updateAudioBot、commandAudioBot等方法
+src/lib/useCommon.ts - 通用Hook文件
+提供useVisionMode、useDeviceState等自定义Hook
+简化组件中的状态管理
+5. 样式文件
+src/components/AISettings/index.module.less - AI设置组件样式
+定义抽屉容器、场景选择、配置区域等样式 index.module.less:6-36
+src/components/AvatarCard/index.module.less - 头像卡片样式
+定义卡片、头像、文本区域等样式
+src/pages/MainPage/Menu/index.module.less - 菜单样式
+定义包装器、信息框、问题列表等样式
+src/pages/MainPage/MainArea/Room/index.module.less - 房间样式
+定义房间布局和视频显示区域样式
+组件间的详细关系
+1. 页面层次结构
+MainPage  
+├── MainArea  
+│   ├── AvatarCard  
+│   │   └── AISettings (抽屉式，条件渲染)  
+│   └── Room  
+│       └── CameraArea  
+└── Menu  
+    └── Operation  
+2. 数据流向
+配置数据流:
+用户通过AISettings组件修改配置
+AISettings更新ConfigFactory中的配置值
+AISettings通过Redux更新全局状态
+AISettings调用RtcClient.updateAudioBot()应用配置
+AvatarCard从Redux读取并显示最新配置
+交互数据流:
+用户通过Menu点击预定义问题
+Menu调用RtcClient.commandAudioBot()发送命令
+Menu通过Redux更新消息历史
+系统处理AI响应并更新状态
+3. 设备控制流
+摄像头控制:
+用户通过Operation组件控制摄像头
+或通过CameraArea中的提示按钮开启摄像头
+状态更新后CameraArea显示相应内容
+场景与设备联动:
+当选择视觉理解模型的场景时(TEACHING_ASSISTANT或SCREEN_READER)
+AISettings会根据场景自动配置视频源类型
+并控制摄像头或屏幕共享的开启/关闭
+可修改的具体组件和文件
+1. 修改预定义问题
+文件: src/config/common.ts
 
-*   **Purpose**: The frontend client is a React-based application designed for real-time communication (RTC) integrated with AI-Generated Content (AIGC) services. It allows users to interact with AI bots through voice.
-*   **Core Technologies**:
-    *   **Framework**: React 18, TypeScript
-    *   **State Management**: Redux Toolkit
-    *   **Routing**: React Router v6
-    *   **UI Components**: Arco Design
-    *   **RTC Integration**: VolcEngine RTC SDK (v4.66.1)
-    *   **Build Tools**: Craco (Create React App Configuration Override)
+找到Questions对象，修改各场景的预设问题数组
+2. 修改AI场景
+文件: src/config/common.ts
 
-## 2. Core Architectural Pillars
+修改SCENE枚举添加新场景
+在Name、Icon、Prompt、Welcome、Voice、Model等映射中添加对应配置
+文件: src/components/AISettings/index.tsx
 
-The frontend is built around several key components and systems:
+修改SCENES数组添加或移除场景选项 index.tsx:214-231
+3. 修改AI音色
+文件: src/config/common.ts
 
-### 2.1. `RTCClient` Class
-*   **Role**: The central nervous system for all Real-Time Communication operations.
-*   **Responsibilities**:
-    *   Managing the VolcEngine RTC engine (`VERTCEngine`) and rooms (`VERTCRoom`).
-    *   Handling user authentication and room joining/leaving.
-    *   Publishing and subscribing to audio/video streams.
-    *   Managing audio/video devices.
-    *   Controlling the AI bot (start, stop, command, update) via RTC messages or proxied API calls.
-    *   Setting up and handling RTC event listeners.
-*   **Interactions**:
-    *   Directly uses the **VolcEngine RTC SDK**.
-    *   Gets configuration from **`ConfigFactory`**.
-    *   Updates and reads state from the **Redux Store**.
-*   **Location Hint**: Likely in a file like `src/app/rtc.ts` or similar.
+修改VOICE_TYPE枚举添加新音色
+在VOICE_INFO_MAP中添加对应音色信息
+4. 修改AI模型
+文件: src/config/common.ts
 
-### 2.2. Configuration System (`ConfigFactory` Class)
-*   **Role**: Provides a centralized and dynamic way to manage all application configurations.
-*   **Responsibilities**:
-    *   Supplies settings for RTC, ASR, LLM, TTS, and the AIGC Proxy Server.
-    *   Adapts configurations based on the selected `SCENE`, `AI_MODEL`, and `VOICE_TYPE`.
-*   **Key Configurations Managed**:
-    *   `AppId` (for RTC, ASR, TTS)
-    *   `Token` (for RTC, TTS)
-    *   `RoomId`, `UserId`
-    *   AI Model IDs (e.g., `ARK_V3_MODEL_ID`)
-    *   Voice parameters for TTS.
-*   **Key Enums/Concepts**: `SCENE`, `AI_MODEL`, `VOICE_TYPE`, `MODEL_MODE`. These enums define available options and behaviors.
-*   **Location Hint**: `src/config/config.ts` (class definition) and `src/config/common.ts` (for enums and static IDs).
+修改AI_MODEL枚举添加新模型
+调整MODEL_MODE枚举修改模型来源类型
+5. 修改UI界面
+文件: src/components/AvatarCard/index.tsx
 
-### 2.3. State Management (Redux Toolkit)
-*   **Role**: Acts as the single source of truth for the application's state, ensuring predictability and easier debugging.
-*   **Key Slice**: `Room Slice` (or similarly named) is crucial, managing:
-    *   Room connection state.
-    *   Local and remote user information (including AI bot as a user).
-    *   AIGC interaction state (e.g., AI thinking, AI talking).
-    *   Message history between user and AI.
-*   **Interactions**:
-    *   UI Components read from the store to render the view and dispatch actions on user interactions.
-    *   `RTCClient` updates the store based on RTC events and AI responses.
+修改头像卡片的显示内容和样式 index.tsx:55-63
+文件: src/pages/MainPage/Menu/index.tsx
 
-### 2.4. API Integration (API Service)
-*   **Role**: Manages all communication with the backend proxy server (`Server/app.js`). The proxy server, in turn, communicates with VolcEngine AIGC services (ASR, LLM, TTS).
-*   **Responsibilities**:
-    *   Formatting request parameters based on `ConfigFactory` settings.
-    *   Making HTTP requests to the proxy (e.g., to `/proxyAIGCFetch`).
-    *   Processing responses from the proxy.
-    *   Basic error handling for API calls.
-*   **Location Hint**: Likely in `src/app/api.ts`.
+修改菜单的信息显示和问题列表 index.tsx:80-86
+文件: src/components/AISettings/index.tsx
 
-### 2.5. UI Components
-*   **Role**: Provide the user interface for interacting with the RTC and AIGC functionalities.
-*   **Key Components**:
-    *   **`AISettings`**: Allows users to configure AI models, scenes, voices, and prompts.
-    *   **`AvatarCard` / `CameraArea`**: Displays user video, remote user video (including AI avatar if applicable).
-    *   **`Menu` / `AudioController`**: Provides controls for joining/leaving rooms, toggling microphone/camera, starting/stopping AI interaction.
-*   **Interaction**: These components read data from the Redux store and dispatch actions to modify state or trigger operations (e.g., via `RTCClient` or API service).
+修改AI设置抽屉的配置选项和布局 index.tsx:452-477
+6. 修改视频显示
+文件: src/pages/MainPage/MainArea/Room/CameraArea.tsx
 
-### 2.6. Custom Hooks
-*   **Role**: Encapsulate reusable logic, particularly for interacting with RTC, managing device states, and handling room operations.
-*   **Examples**:
-    *   `useRtcListeners`: Sets up and tears down RTC event listeners.
-    *   `useDeviceState`: Manages access to and state of microphone/camera.
-    *   `useJoin`/`useLeave`: Encapsulates logic for joining and leaving RTC rooms.
-    *   `useVisionMode`: Handles logic specific to vision-enabled AI models.
-*   **Benefits**: Simplifies component logic and promotes code reuse.
+修改摄像头区域的显示和控制逻辑
 
-## 3. Key Data Flow: AI Conversation Cycle
 
-1.  **User Input**: User speaks.
-2.  **Audio Capture**: UI Component (e.g., `AudioController`) captures audio via browser APIs.
-3.  **RTC Processing**: `RTCClient` takes the audio, processes it (if needed), and sends it via the VolcEngine RTC SDK to the AIGC backend infrastructure (or to the local proxy which then forwards it).
-4.  **AIGC Pipeline (Backend)**:
-    *   **ASR**: Speech is converted to text.
-    *   **LLM**: Text is processed by the Large Language Model.
-    *   **TTS**: LLM's text response is converted back to speech.
-5.  **AI Response**: The backend sends the AI's audio response back via RTC.
-6.  **Receive & Play**: `RTCClient` receives the audio stream.
-7.  **State Update**: `RTCClient` updates the Redux Store (e.g., AI is talking, new message).
-8.  **UI Render**: UI Components re-render based on the new state, and the AI's audio response is played out.
 
-## 4. Important Terminology & Entities
 
-*   **RTC**: Real-Time Communication.
-*   **AIGC**: AI Generated Content.
-*   **ASR**: Automatic Speech Recognition (Speech-to-Text).
-*   **LLM**: Large Language Model (Text-to-Text, understanding, generation).
-*   **TTS**: Text-to-Speech (Text-to-Audio).
-*   **`AppId`**: Application Identifier, unique for VolcEngine services (e.g., RTC AppId, ASR AppId, TTS AppId).
-*   **`Token`**: Authentication credential for services like RTC and TTS.
-*   **`RoomId`**: Identifier for the virtual room where communication happens.
-*   **`UserId`**: Unique identifier for each participant (including the AI bot).
-*   **`BusinessId`**: Optional identifier for business-specific tracking.
-*   **`SCENE`**: Predefined application scenarios (e.g., `INTELLIGENT_ASSISTANT`, `VIRTUAL_GIRL_FRIEND`) that bundle specific models, prompts, and voices.
-*   **`AI_MODEL`**: Specific Large Language Models (e.g., `Doubao-pro-4k`, `Vision`).
-*   **`VOICE_TYPE`**: Specific synthesized voices for TTS (e.g., `BV001_streaming` for "通用女声").
-*   **`ARK_V3_MODEL_ID`**: Endpoint ID for models hosted on VolcEngine's Ark platform.
-*   **`BotId`**: Identifier for Coze bots or Ark platform assistants.
-*   **Proxy Server**: The backend server (`Server/app.js`) that securely adds credentials (AK/SK) and forwards requests to VolcEngine APIs.
 
-## 5. Configuration Touchpoints & Requirements
 
-*   **Primary Configuration Files**:
-    *   `rtc-aigc-demo/src/config/config.ts`: Contains `ConfigFactory` and `BaseConfig` where most IDs and tokens are set.
-    *   `rtc-aigc-demo/src/config/common.ts`: Defines enums like `AI_MODEL`, `SCENE`, `VOICE_TYPE`, and model-specific IDs like `ARK_V3_MODEL_ID`.
-*   **Crucial Settings**:
-    *   RTC: `AppId`, `RoomId`, `UserId`, `Token`.
-    *   AIGC Services: `ASRAppId`, `TTSAppId`, `TTSToken`.
-    *   LLM: `ARK_V3_MODEL_ID` for Ark models, or `BotID` for Coze/Ark assistants.
-*   **Impact of Misconfiguration**: The application has error handling to guide users if configurations are missing or incorrect, but functionality will be impaired.
 
-## 6. Development & Debugging Pointers
 
-*   **Error Handling**: The application has built-in error handling for RTC connections, API calls, and device permissions. Check console logs and UI notifications.
-*   **State Inspection**: Utilize Redux DevTools to inspect the application state, dispatched actions, and state changes. This is invaluable for understanding data flow and debugging issues.
-*   **Configuration Check**: When facing issues like "AI not responding" or "token error":
-    *   Verify all IDs (`AppId`, `RoomId`, `UserId`, model IDs) and `Token` values in `config.ts` and `common.ts`.
-    *   Ensure tokens are not expired and match the `RoomId`/`UserId` they were generated for.
-*   **Backend Proxy**: Remember the frontend relies on the Node.js proxy server found in `rtc-aigc-demo/Server/app.js`. Ensure it's running and correctly configured with AK/SK.
-*   **Network Tab**: Use the browser's developer tools (Network tab) to inspect requests to the proxy server and understand API interactions.
-
-This guide should help in navigating and understanding the frontend codebase of the `rtc-aigc-demo` project.

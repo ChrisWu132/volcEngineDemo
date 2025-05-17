@@ -9,6 +9,8 @@ import aigcConfig from '@/config';
 import InvokeButton from '@/pages/MainPage/MainArea/Antechamber/InvokeButton';
 import { useJoin } from '@/lib/useCommon';
 import style from './index.module.less';
+import MainBackground from '@/assets/img/main_background.png';
+import RobotImage from '@/assets/img/robot.png';
 
 function Antechamber() {
   const [joining, dispatchJoin] = useJoin();
@@ -30,10 +32,29 @@ function Antechamber() {
 
   return (
     <div className={style.wrapper}>
-      <AvatarCard className={`${style.avatar} ${Utils.isMobile() ? style.mobile : ''}`} />
-      <div className={style.title}>AI 语音助手</div>
-      <div className={style.description}>Powered by 豆包大模型和火山引擎视频云 RTC</div>
-      <InvokeButton onClick={handleJoinRoom} loading={joining} className={style['invoke-btn']} />
+      <div className={style.backgroundContainer}>
+        <img src={MainBackground} alt="背景" className={style.background} />
+      </div>
+      
+      <div className={style.contentContainer}>
+        <div className={style.greeting}>
+          <div className={style.hello}>你好，</div>
+          <div className={style.goodMorning}>早上好</div>
+        </div>
+        
+        <div className={style.robotContainer}>
+          <img src={RobotImage} alt="机器人" className={style.robot} />
+        </div>
+        
+        <div className={style.botInfo}>
+          <div className={style.botName}>蒙迪</div>
+          <div className={style.botDescription}>一个能让科学变得有趣并回答好奇问题的聪明机器人</div>
+        </div>
+        
+        <InvokeButton onClick={handleJoinRoom} loading={joining} className={style['invoke-btn']} />
+        
+        <AvatarCard className={`${style.avatar} ${Utils.isMobile() ? style.mobile : ''}`} />
+      </div>
     </div>
   );
 }

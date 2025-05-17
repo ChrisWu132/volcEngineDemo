@@ -43,7 +43,7 @@ function Menu() {
       );
       setQuestion('');
     }
-  }, [question, room.isAITalking]);
+  }, [question, room.isAITalking, dispatch]);
 
   return (
     <div className={styles.wrapper}>

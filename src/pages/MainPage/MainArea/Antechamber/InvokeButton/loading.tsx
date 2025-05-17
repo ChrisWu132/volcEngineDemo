@@ -9,6 +9,7 @@ function Loading(props: React.HTMLAttributes<HTMLDivElement>) {
   const { className = '', ...rest } = props;
   return (
     <div className={`${style.loader} ${className}`} {...rest}>
+      <div className={style.loadingText}>连接中</div>
       {Array(3)
         .fill(0)
         .map((_, index) => (

@@ -4,7 +4,7 @@
  */
 
 import ResizeWrapper from '@/components/ResizeWrapper';
-import Menu from './Menu';
+// import Menu from './Menu'; // do not delete this yet, might be used in the future
 import utils from '@/utils/utils';
 import MainArea from './MainArea';
 import styles from './index.module.less';
@@ -21,11 +21,13 @@ export default function () {
         <div className={`${styles.mainArea} ${utils.isMobile() ? styles.isMobile : ''}`}>
           <MainArea />
         </div>
+         {/* do not delete this yet, might be used in the future
         {utils.isMobile() ? null : (
           <div className={styles.operationArea}>
             <Menu />
           </div>
         )}
+          */}
       </div>
     </ResizeWrapper>
   );

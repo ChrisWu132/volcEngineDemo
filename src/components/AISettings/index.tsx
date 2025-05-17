@@ -44,11 +44,7 @@ export interface IAISettingsProps {
 
 const RadioGroup = Radio.Group;
 
-const SCENES = [
-  SCENE.MONDI_COUNSELOR,
-  SCENE.MONDI_SOUL_CABIN,
-  SCENE.CUSTOM,
-];
+const SCENES = [SCENE.MONDI_COUNSELOR, SCENE.MONDI_SOUL_CABIN, SCENE.CUSTOM];
 
 function AISettings({ open, onCancel, onOk }: IAISettingsProps) {
   const dispatch = useDispatch();
@@ -141,10 +137,10 @@ function AISettings({ open, onCancel, onOk }: IAISettingsProps) {
     dispatch(updateAIConfig(Config.aigcConfig));
 
     if (isVisionMode(data.model)) {
-      /** 关屏幕采集，打开摄像头 */
-      room.isJoined && !isVideoPublished && switchCamera();
-      room.isJoined && isScreenPublished && switchScreenCapture();
-      Config.VisionSourceType = StreamIndex.STREAM_INDEX_MAIN;
+          /** 关屏幕采集，打开摄像头 */
+          room.isJoined && !isVideoPublished && switchCamera();
+          room.isJoined && isScreenPublished && switchScreenCapture();
+          Config.VisionSourceType = StreamIndex.STREAM_INDEX_MAIN;
     } else {
       /** 全关 */
       room.isJoined && isVideoPublished && switchCamera();
@@ -164,7 +160,7 @@ function AISettings({ open, onCancel, onOk }: IAISettingsProps) {
     if (open) {
       setScene(room.scene);
     }
-  }, [open]);
+  }, [open, room.scene]);
 
   return (
     <Drawer

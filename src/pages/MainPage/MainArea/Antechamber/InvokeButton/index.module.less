@@ -10,23 +10,33 @@
     align-items: center;
     justify-content: center;
 
-
     .btn {
-        width: max-content;
-        height: max-content;
-        border-radius: 50%;
+        width: 220px;
+        height: 56px;
+        border-radius: 28px;
         display: flex;
         justify-content: center;
         align-items: center;
-
+        background: linear-gradient(90deg, #304675 0%, #4C4789 50%, #5D3A95 100%);
+        box-shadow: 0px 8px 20px rgba(73, 58, 144, 0.5);
+        transition: all 0.2s ease-in-out;
+        
         .icon {
-            position: absolute;
+            position: relative;
+        }
+        
+        .buttonText {
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
         }
     }
 
     .text {
-        margin-top: 8px;
-        color: rgba(115, 122, 135, 1);
+        margin-top: 12px;
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 14px;
     }
 }
 
@@ -34,22 +44,36 @@
     cursor: pointer;
 }
 
-.cursor:hover {
-    opacity: 0.8;
+.cursor:hover .btn {
+    background: linear-gradient(90deg, #3B558E 0%, #5E57A8 50%, #714CB4 100%);
+    box-shadow: 0px 10px 25px rgba(93, 78, 172, 0.6);
+    transform: translateY(-2px);
+    transition: all 0.2s ease;
 }
 
-.cursor:active {
-    opacity: 1;
+.cursor:active .btn {
+    background: linear-gradient(90deg, #263862 0%, #403975 50%, #4D2E7C 100%);
+    box-shadow: 0px 4px 12px rgba(60, 48, 113, 0.4);
+    transform: translateY(1px);
+    transition: all 0.1s ease;
 }
 
 .loader {
     display: flex;
-    gap: 5px;
+    gap: 8px;
+    align-items: center;
+}
+
+.loadingText {
+    color: white;
+    font-size: 18px;
+    font-weight: 500;
+    margin-right: 12px;
 }
 
 .dot {
-    width: 10px;
-    height: 10px;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
     background-color: white;
     animation: glow 0.9s infinite;

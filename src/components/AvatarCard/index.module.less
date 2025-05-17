@@ -139,15 +139,27 @@
     }
 }
 
+.settingsCard {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    padding: 8px;
+    background-color: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(8px);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
 .button {
     position: relative;
     width: max-content !important;
-    height: 24px !important;
-    margin-top: 8px;
-    border-radius: 4px !important;
-    font-size: 12px !important;
+    height: 32px !important;
+    border-radius: 8px !important;
+    font-size: 14px !important;
     background: linear-gradient(77.86deg, rgba(229, 242, 255, 0.5) -3.23%, rgba(217, 229, 255, 0.5) 51.11%, rgba(246, 226, 255, 0.5) 98.65%);
     cursor: pointer;
+    padding: 0 16px !important;
 
     .button-text {
         background: linear-gradient(77.86deg, #3384FF -3.23%, #014BDE 51.11%, #A945FB 98.65%);
@@ -155,7 +167,7 @@
         background-clip: text;
         color: transparent;
         font-weight: 500;
-        line-height: 20px;
+        line-height: 24px;
         text-align: center;
     }
 }
@@ -163,23 +175,23 @@
 .button::after {
     content: '';
     position: absolute;
-    border-radius: 3px;
+    border-radius: 7px;
     top: 0px;
     left: 0px;
     width: 100%;
-    height: 22px;
-    background: white;
+    height: 30px;
+    background: rgba(255, 255, 255, 0.85);
     z-index: -1;
 }
 
 .button::before {
     content: '';
     position: absolute;
-    border-radius: 5px;
+    border-radius: 9px;
     top: -2px;
     left: -2px;
     width: calc(100% + 4px);
-    height: 26px;
+    height: 34px;
     background: linear-gradient(90deg, rgba(0, 139, 255, 0.5) 0%, rgba(0, 98, 255, 0.5) 49.5%, rgba(207, 92, 255, 0.5) 100%);
     z-index: -2;
 }
