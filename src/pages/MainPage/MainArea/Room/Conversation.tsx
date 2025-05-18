@@ -29,12 +29,27 @@ function Conversation(props: React.HTMLAttributes<HTMLDivElement>) {
     return owner === Config.BotName && isAITalking;
   };
 
+  // Automatically scroll to bottom when new messages arrive
   useEffect(() => {
     const container = containerRef.current;
     if (container) {
       container.scrollTop = container.scrollHeight - container.clientHeight;
     }
-  }, [msgHistory.length]);
+  }, [msgHistory.length, isAITalking]);
+
+  // Also scroll when AI is talking (for streaming responses)
+  useEffect(() => {
+    if (isAITalking) {
+      const scrollInterval = setInterval(() => {
+        const container = containerRef.current;
+        if (container) {
+          container.scrollTop = container.scrollHeight - container.clientHeight;
+        }
+      }, 500);
+      
+      return () => clearInterval(scrollInterval);
+    }
+  }, [isAITalking]);
 
   return (
     <div ref={containerRef} className={`${styles.conversation} ${className}`} {...rest}>
