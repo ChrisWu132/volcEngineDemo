@@ -36,6 +36,12 @@ export interface Msg {
   isInterrupted?: boolean;
 }
 
+export interface InterviewRecord {
+  question: string;
+  answer: string;
+  timestamp: string;
+}
+
 export interface RoomState {
   time: number;
   roomId?: string;
@@ -100,6 +106,21 @@ export interface RoomState {
       definite: boolean;
     };
   };
+  
+  /**
+   * @brief 面谈历史记录，每条记录包含问题、回答和时间戳
+   */
+  interviewHistory: InterviewRecord[];
+  
+  /**
+   * @brief 面谈是否已结束
+   */
+  isInterviewEnded: boolean;
+  
+  /**
+   * @brief 面谈报告内容
+   */
+  interviewReport: string;
 }
 
 const initialState: RoomState = {
@@ -124,6 +145,10 @@ const initialState: RoomState = {
 
   msgHistory: [],
   currentConversation: {},
+  
+  interviewHistory: [],
+  isInterviewEnded: false,
+  interviewReport: '',
 };
 
 export const roomSlice = createSlice({
@@ -297,6 +322,24 @@ export const roomSlice = createSlice({
       state.isAITalking = false;
       state.isUserTalking = false;
     },
+    
+    addInterviewRecord: (state, { payload }: { payload: InterviewRecord }) => {
+      state.interviewHistory.push(payload);
+    },
+    
+    endInterview: (state) => {
+      state.isInterviewEnded = true;
+    },
+    
+    setInterviewReport: (state, { payload }: { payload: string }) => {
+      state.interviewReport = payload;
+    },
+    
+    resetInterview: (state) => {
+      state.interviewHistory = [];
+      state.isInterviewEnded = false;
+      state.interviewReport = '';
+    },
   },
 });
 
@@ -322,6 +365,10 @@ export const {
   setInterruptMsg,
   updateNetworkQuality,
   updateScene,
+  addInterviewRecord,
+  endInterview,
+  setInterviewReport,
+  resetInterview,
 } = roomSlice.actions;
 
 export default roomSlice.reducer;

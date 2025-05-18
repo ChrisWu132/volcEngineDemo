@@ -10,6 +10,8 @@ import {
   setInterruptMsg,
   updateAITalkState,
   updateAIThinkState,
+  addInterviewRecord,
+  endInterview,
 } from '@/store/slices/room';
 import RtcClient from '@/lib/RtcClient';
 import Utils from '@/utils/utils';
@@ -78,6 +80,8 @@ export const MessageTypeCode = {
 
 export const useMessageHandler = () => {
   const dispatch = useDispatch();
+  
+  let lastQuestion = '';
 
   const maps = {
     /**
@@ -115,6 +119,40 @@ export const useMessageHandler = () => {
       if (data) {
         const { text: msg, definite, userId: user, paragraph } = data;
         logger.debug('handleRoomBinaryMessageReceived', data);
+        
+        const store = (window as any)?.store?.getState();
+        const currentScene = store?.room?.scene;
+        const isInterviewEnded = store?.room?.isInterviewEnded;
+        
+        if (currentScene === 'EMOTION_INTERVIEW' && !isInterviewEnded) {
+          if (user === RtcClient.config.uid) {
+            if (lastQuestion) {
+              dispatch(
+                addInterviewRecord({
+                  question: lastQuestion,
+                  answer: msg,
+                  timestamp: new Date().toISOString(),
+                })
+              );
+              
+              const interviewHistory = store?.room?.interviewHistory || [];
+              const MAX_ROUNDS = 10; // 设置最大轮次
+              
+              if (
+                interviewHistory.length >= MAX_ROUNDS || 
+                msg.includes('我想休息一下') || 
+                msg.includes('我想要休息') || 
+                msg.includes('生成报告') ||
+                msg.includes('结束面谈')
+              ) {
+                RtcClient.endEmotionInterview();
+              }
+            }
+          } else if (user === 'RobotMan_') {
+            lastQuestion = msg;
+          }
+        }
+        
         if ((window as any)._debug_mode) {
           dispatch(setHistoryMsg({ msg, user, paragraph, definite }));
         } else {

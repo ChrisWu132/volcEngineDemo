@@ -5,7 +5,7 @@
 
 import { useSelector } from 'react-redux';
 import { memo, useState } from 'react';
-import { Drawer } from '@arco-design/web-react';
+import { Drawer, Button } from '@arco-design/web-react';
 import { useDeviceState, useLeave } from '@/lib/useCommon';
 import { RootState } from '@/store';
 import { isVisionMode } from '@/config/common';
@@ -22,9 +22,16 @@ import MicCloseSVG from '@/assets/img/MicClose.svg';
 import LeaveRoomSVG from '@/assets/img/LeaveRoom.svg';
 import ScreenOnSVG from '@/assets/img/ScreenOn.svg';
 import ScreenOffSVG from '@/assets/img/ScreenOff.svg';
+import ReportSVG from '@/assets/img/Report.svg';
 
-function ToolBar(props: React.HTMLAttributes<HTMLDivElement>) {
-  const { className, ...rest } = props;
+interface ToolBarProps extends React.HTMLAttributes<HTMLDivElement> {
+  showReport?: () => void;
+  isInterviewScene?: boolean;
+  isInterviewEnded?: boolean;
+}
+
+function ToolBar(props: ToolBarProps) {
+  const { className, showReport, isInterviewScene, isInterviewEnded, ...rest } = props;
   const room = useSelector((state: RootState) => state.room);
   const [open, setOpen] = useState(false);
   const model = room.aiConfig.Config.LLMConfig?.ModelName;
@@ -71,6 +78,15 @@ function ToolBar(props: React.HTMLAttributes<HTMLDivElement>) {
         )
       ) : (
         ''
+      )}
+      {isInterviewScene && isInterviewEnded && showReport && (
+        <img 
+          src={ReportSVG} 
+          onClick={showReport} 
+          className={style.btn} 
+          alt="report"
+          title="查看情绪面谈报告" 
+        />
       )}
       <img src={LeaveRoomSVG} onClick={leaveRoom} className={style.btn} alt="leave" />
       {utils.isMobile() ? (

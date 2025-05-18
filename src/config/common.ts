@@ -7,6 +7,7 @@ import 通用女声 from '@/assets/img/tongyongnvsheng.jpeg';
 import 通用男声 from '@/assets/img/tongyongnansheng.jpeg';
 import MONDI_COUNSELOR from '@/assets/img/MONDI_COUNSELOR.png';
 import MONDI_SOUL_CABIN from '@/assets/img/MONDI_SOUL_CABIN.png';
+import EMOTION_INTERVIEW from '@/assets/img/EMOTION_INTERVIEW.png';
 
 
 
@@ -138,6 +139,7 @@ export enum SCENE {
   MONDI_COUNSELOR = 'MONDI_COUNSELOR',
   MONDI_SOUL_CABIN = 'MONDI_SOUL_CABIN',
   CUSTOM = 'CUSTOM',
+  EMOTION_INTERVIEW = 'EMOTION_INTERVIEW',
 }
 
 export const ScreenShareScene: SCENE[] = [];
@@ -146,12 +148,14 @@ export const Icon = {
   [SCENE.MONDI_COUNSELOR]: MONDI_COUNSELOR,
   [SCENE.MONDI_SOUL_CABIN]: MONDI_SOUL_CABIN,
   [SCENE.CUSTOM]: MONDI_COUNSELOR,
+  [SCENE.EMOTION_INTERVIEW]: EMOTION_INTERVIEW,
 };
 
 export const Name = {
   [SCENE.MONDI_COUNSELOR]: '蒙迪机器人',
   [SCENE.MONDI_SOUL_CABIN]: '心灵休息舱',
   [SCENE.CUSTOM]: '自定义',
+  [SCENE.EMOTION_INTERVIEW]: '情绪面谈',
 };
 
 /**
@@ -161,18 +165,21 @@ export const Welcome = {
   [SCENE.MONDI_COUNSELOR]: '你好呀！我是蒙迪机器人，来自爱莫迪卡星系。很高兴先和你聊聊，待会儿我们的心理咨询师也会和你好好聊。现在，想不想告诉我最近有没有什么让你不太开心的事情呢？',
   [SCENE.MONDI_SOUL_CABIN]: '欢迎来到这里，这里是你的专属树洞，想说什么都可以。',
   [SCENE.CUSTOM]: '',
+  [SCENE.EMOTION_INTERVIEW]: '欢迎参加情绪面谈，我是你的AI心理助手。你可以和我分享你近期的情绪状态和心理感受，我会倾听并给予支持。完成面谈后，我将为你生成一份情绪分析报告。请告诉我，最近你的心情如何？',
 };
 
 export const Model = {
   [SCENE.MONDI_COUNSELOR]: AI_MODEL.DEEPSEEK_V3,
   [SCENE.MONDI_SOUL_CABIN]: AI_MODEL.DEEPSEEK_V3,
   [SCENE.CUSTOM]: AI_MODEL.DEEPSEEK_V3,
+  [SCENE.EMOTION_INTERVIEW]: AI_MODEL.DEEPSEEK_V3,
 };
 
 export const Voice = {
   [SCENE.MONDI_COUNSELOR]: VOICE_TYPE.通用女声,
   [SCENE.MONDI_SOUL_CABIN]: VOICE_TYPE.通用女声,
   [SCENE.CUSTOM]: VOICE_TYPE.通用女声,
+  [SCENE.EMOTION_INTERVIEW]: VOICE_TYPE.通用女声,
 };
 
 export const Questions = {
@@ -187,6 +194,11 @@ export const Questions = {
     '能跟我聊聊吗？我需要有人倾听。',
   ],
   [SCENE.CUSTOM]: ['你能帮我解决什么问题?', '今天北京天气怎么样?', '你喜欢哪位流行歌手?'],
+  [SCENE.EMOTION_INTERVIEW]: [
+    '最近我经常感到焦虑，不知道该怎么缓解。',
+    '我对未来感到迷茫，不确定自己想要什么。',
+    '我想了解一下如何更好地管理我的情绪。',
+  ],
 };
 
 /**
@@ -220,6 +232,21 @@ export const Prompt = {
 2. 不评判：接纳用户的所有情绪，不对其进行评判或批评。
 3. 适度回应：给予适当的回应和建议，但主要是倾听和陪伴。`,
   [SCENE.CUSTOM]: '',
+  [SCENE.EMOTION_INTERVIEW]: `##人设
+你是一位专业的情绪面谈师，擅长通过对话了解用户的情绪状态，并提供专业的情绪分析和建议。你的目标是在轻松自然的交流中收集用户的情绪信息，最终生成一份有价值的情绪分析报告。
+
+##技能
+1. 情绪识别：敏锐地捕捉用户言语中表达的各种情绪，包括显性和隐性情绪。
+2. 共情倾听：以开放和接纳的态度倾听用户的分享，给予情感上的支持和理解。
+3. 引导式提问：使用开放性问题引导用户更深入地探索和表达自己的情绪。
+4. 情绪分析：能够分析用户情绪的根源、模式和影响因素。
+5. 报告生成：基于面谈内容，生成结构化的情绪分析报告。
+
+##约束
+1. 保持专业：使用专业但易懂的语言，避免过于随意的表达。
+2. 尊重隐私：强调对用户信息的保密性，不过度追问敏感话题。
+3. 不做诊断：你不是医生，避免做出任何医学诊断或替代专业心理医疗建议。
+4. 积极引导：在用户表达负面情绪时，适当引导往积极方向思考，但不忽视或轻视其负面感受。`,
 };
 
 export const isVisionMode = (model?: AI_MODEL) => model?.startsWith('Vision');

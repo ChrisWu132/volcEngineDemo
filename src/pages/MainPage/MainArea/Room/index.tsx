@@ -3,7 +3,10 @@
  * SPDX-license-identifier: BSD-3-Clause
  */
 
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import AvatarCard from '@/components/AvatarCard';
+import InterviewReport from '@/components/InterviewReport';
 import Conversation from './Conversation';
 import ToolBar from './ToolBar';
 import CameraArea from './CameraArea';
@@ -15,6 +18,17 @@ import MainBackground from '@/assets/img/main_background.png';
 import RobotImage from '@/assets/img/robot.png';
 
 function Room() {
+  const [reportVisible, setReportVisible] = useState(false);
+  const { isInterviewEnded, scene } = useSelector((state: any) => state.room);
+  
+  const showReport = () => {
+    setReportVisible(true);
+  };
+  
+  const hideReport = () => {
+    setReportVisible(false);
+  };
+  
   return (
     <div className={`${style.wrapper} ${utils.isMobile() ? style.mobile : ''}`}>
       {/* Background container */}
@@ -33,9 +47,17 @@ function Room() {
         </div>
         
         <Conversation className={style.conversation} />
-        <ToolBar className={style.toolBar} />
+        <ToolBar 
+          className={style.toolBar} 
+          showReport={showReport} 
+          isInterviewScene={scene === 'EMOTION_INTERVIEW'} 
+          isInterviewEnded={isInterviewEnded} 
+        />
         <AudioController className={style.controller} />
         <div className={style.declare}>AI生成内容由大模型生成，不能完全保障真实</div>
+        
+        {/* Interview Report Drawer */}
+        <InterviewReport open={reportVisible} onClose={hideReport} />
       </div>
     </div>
   );

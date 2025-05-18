@@ -44,7 +44,7 @@ export interface IAISettingsProps {
 
 const RadioGroup = Radio.Group;
 
-const SCENES = [SCENE.MONDI_COUNSELOR, SCENE.MONDI_SOUL_CABIN, SCENE.CUSTOM];
+const SCENES = [SCENE.MONDI_COUNSELOR, SCENE.MONDI_SOUL_CABIN, SCENE.EMOTION_INTERVIEW, SCENE.CUSTOM];
 
 function AISettings({ open, onCancel, onOk }: IAISettingsProps) {
   const dispatch = useDispatch();

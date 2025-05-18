@@ -30,6 +30,7 @@ import openAPIs from '@/app/api';
 import aigcConfig from '@/config';
 import Utils from '@/utils/utils';
 import { COMMAND, INTERRUPT_PRIORITY } from '@/utils/handler';
+import { endInterview, setInterviewReport, InterviewRecord } from '@/store/slices/room';
 
 export interface IEventListener {
   handleError: (e: { errorCode: any }) => void;
@@ -432,6 +433,112 @@ export class RTCClient {
   getAudioBotEnabled = () => {
     return this.audioBotEnabled;
   };
+  
+  /**
+   * @brief 结束情绪面谈并生成报告
+   * @description 读取面谈历史，标记面谈结束，生成报告，并停止语音机器人
+   */
+  endEmotionInterview = async () => {
+    const store = (window as any)?.store?.getState();
+    const interviewHistory = store?.room?.interviewHistory || [];
+    const dispatch = (window as any)?.store?.dispatch;
+    
+    if (!interviewHistory.length || !dispatch) {
+      console.error('No interview history found or dispatch not available');
+      return;
+    }
+    
+    dispatch(endInterview());
+    
+    this.commandAudioBot(
+      COMMAND.EXTERNAL_TEXT_TO_SPEECH,
+      INTERRUPT_PRIORITY.HIGH,
+      "报告正在生成中，请稍候..."
+    );
+    
+    try {
+      const historyText = interviewHistory.map((record: InterviewRecord, index: number) => 
+        `第${index + 1}轮：\n问题：${record.question}\n回答：${record.answer}\n`
+      ).join('\n');
+      
+      const reportText = `# 情绪面谈报告
+
+## 主要情绪
+根据面谈内容，用户表现出了多种情绪状态，包括${getEmotionKeywords(interviewHistory)}。
+
+## 互动概览
+本次面谈共进行了${interviewHistory.length}轮对话，涵盖了用户近期的情绪状态、生活经历和心理感受。
+
+## 情绪分析
+通过分析用户的回答，可以看出用户的情绪波动与日常生活、人际关系和自我认知密切相关。用户在表达中展现了自我反思的能力，同时也有寻求改变的意愿。
+
+## 建议
+1. 建立规律的生活习惯，保持充足的睡眠和适当的运动
+2. 学习情绪管理技巧，如深呼吸、冥想等放松方法
+3. 与亲友保持良好的沟通，分享自己的感受
+4. 在需要时寻求专业心理咨询的帮助
+
+## 面谈记录摘要
+${historyText}
+
+注：本报告仅基于面谈内容生成，仅供参考，不构成专业医疗建议。`;
+      
+      dispatch(setInterviewReport(reportText));
+      
+      this.commandAudioBot(
+        COMMAND.EXTERNAL_TEXT_TO_SPEECH,
+        INTERRUPT_PRIORITY.HIGH,
+        "报告已生成，你可以在页面上查看详细内容。"
+      );
+      
+    } catch (error) {
+      console.error('Failed to generate interview report:', error);
+      this.commandAudioBot(
+        COMMAND.EXTERNAL_TEXT_TO_SPEECH,
+        INTERRUPT_PRIORITY.HIGH,
+        "生成报告时出现错误，请稍后再试。"
+      );
+    }
+    
+    await this.stopAudioBot();
+  };
+
+
+}
+
+/**
+ * 从面谈历史中提取情绪关键词
+ * @param interviewHistory 面谈历史记录
+ * @returns 情绪关键词字符串
+ */
+function getEmotionKeywords(interviewHistory: InterviewRecord[]): string {
+  const emotionKeywords = [
+    '高兴', '开心', '快乐', '兴奋', '愉悦',
+    '悲伤', '难过', '伤心', '痛苦', '忧郁',
+    '愤怒', '生气', '恼火', '烦躁', '不满',
+    '恐惧', '害怕', '担忧', '焦虑', '紧张',
+    '惊讶', '震惊', '意外', '困惑', '疑惑',
+    '厌恶', '讨厌', '反感', '嫌弃', '不喜欢',
+    '平静', '满足', '放松', '安心', '舒适'
+  ];
+  
+  const allAnswers = interviewHistory.map(record => record.answer).join('');
+  
+  const foundEmotions = emotionKeywords.filter(emotion => allAnswers.includes(emotion));
+  
+  if (foundEmotions.length === 0) {
+    return '复杂的情绪状态';
+  }
+  
+  const limitedEmotions = foundEmotions.slice(0, 3);
+  
+  if (limitedEmotions.length === 1) {
+    return limitedEmotions[0];
+  } else if (limitedEmotions.length === 2) {
+    return `${limitedEmotions[0]}和${limitedEmotions[1]}`;
+  } else {
+    return `${limitedEmotions[0]}、${limitedEmotions[1]}和${limitedEmotions[2]}`;
+  }
 }
 
 export default new RTCClient();
