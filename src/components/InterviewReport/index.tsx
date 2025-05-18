@@ -21,7 +21,7 @@ function InterviewReport({ open, onClose }: IInterviewReportProps) {
     <Drawer
       width={utils.isMobile() ? '100%' : 600}
       closable={false}
-      maskClosable={true}
+      maskClosable
       title={null}
       className={styles.container}
       style={{

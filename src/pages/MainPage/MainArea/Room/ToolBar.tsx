@@ -5,7 +5,7 @@
 
 import { useSelector } from 'react-redux';
 import { memo, useState } from 'react';
-import { Drawer, Button } from '@arco-design/web-react';
+import { Drawer } from '@arco-design/web-react';
 import { useDeviceState, useLeave } from '@/lib/useCommon';
 import { RootState } from '@/store';
 import { isVisionMode } from '@/config/common';
@@ -80,12 +80,12 @@ function ToolBar(props: ToolBarProps) {
         ''
       )}
       {isInterviewScene && isInterviewEnded && showReport && (
-        <img 
-          src={ReportSVG} 
-          onClick={showReport} 
-          className={style.btn} 
+        <img
+          src={ReportSVG}
+          onClick={showReport}
+          className={style.btn}
           alt="report"
-          title="查看情绪面谈报告" 
+          title="查看情绪面谈报告"
         />
       )}
       <img src={LeaveRoomSVG} onClick={leaveRoom} className={style.btn} alt="leave" />

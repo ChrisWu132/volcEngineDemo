@@ -433,7 +433,7 @@ export class RTCClient {
   getAudioBotEnabled = () => {
     return this.audioBotEnabled;
   };
-  
+
   /**
    * @brief 结束情绪面谈并生成报告
    * @description 读取面谈历史，标记面谈结束，生成报告，并停止语音机器人
@@ -442,25 +442,28 @@ export class RTCClient {
     const store = (window as any)?.store?.getState();
     const interviewHistory = store?.room?.interviewHistory || [];
     const dispatch = (window as any)?.store?.dispatch;
-    
+
     if (!interviewHistory.length || !dispatch) {
       console.error('No interview history found or dispatch not available');
       return;
     }
-    
+
     dispatch(endInterview());
-    
+
     this.commandAudioBot(
       COMMAND.EXTERNAL_TEXT_TO_SPEECH,
       INTERRUPT_PRIORITY.HIGH,
-      "报告正在生成中，请稍候..."
+      '报告正在生成中，请稍候...'
     );
-    
+
     try {
-      const historyText = interviewHistory.map((record: InterviewRecord, index: number) => 
-        `第${index + 1}轮：\n问题：${record.question}\n回答：${record.answer}\n`
-      ).join('\n');
-      
+      const historyText = interviewHistory
+        .map(
+          (record: InterviewRecord, index: number) =>
+            `第${index + 1}轮：\n问题：${record.question}\n回答：${record.answer}\n`
+        )
+        .join('\n');
+
       const reportText = `# 情绪面谈报告
 
 ## 主要情绪
@@ -482,28 +485,25 @@ export class RTCClient {
 ${historyText}
 
 注：本报告仅基于面谈内容生成，仅供参考，不构成专业医疗建议。`;
-      
+
       dispatch(setInterviewReport(reportText));
-      
+
       this.commandAudioBot(
         COMMAND.EXTERNAL_TEXT_TO_SPEECH,
         INTERRUPT_PRIORITY.HIGH,
-        "报告已生成，你可以在页面上查看详细内容。"
+        '报告已生成，你可以在页面上查看详细内容。'
       );
-      
     } catch (error) {
       console.error('Failed to generate interview report:', error);
       this.commandAudioBot(
         COMMAND.EXTERNAL_TEXT_TO_SPEECH,
         INTERRUPT_PRIORITY.HIGH,
-        "生成报告时出现错误，请稍后再试。"
+        '生成报告时出现错误，请稍后再试。'
       );
     }
-    
+
     await this.stopAudioBot();
   };
-
-
 }
 
 /**
@@ -513,32 +513,62 @@ ${historyText}
  */
 function getEmotionKeywords(interviewHistory: InterviewRecord[]): string {
   const emotionKeywords = [
-    '高兴', '开心', '快乐', '兴奋', '愉悦',
-    '悲伤', '难过', '伤心', '痛苦', '忧郁',
-    '愤怒', '生气', '恼火', '烦躁', '不满',
-    '恐惧', '害怕', '担忧', '焦虑', '紧张',
-    '惊讶', '震惊', '意外', '困惑', '疑惑',
-    '厌恶', '讨厌', '反感', '嫌弃', '不喜欢',
-    '平静', '满足', '放松', '安心', '舒适'
+    '高兴',
+    '开心',
+    '快乐',
+    '兴奋',
+    '愉悦',
+    '悲伤',
+    '难过',
+    '伤心',
+    '痛苦',
+    '忧郁',
+    '愤怒',
+    '生气',
+    '恼火',
+    '烦躁',
+    '不满',
+    '恐惧',
+    '害怕',
+    '担忧',
+    '焦虑',
+    '紧张',
+    '惊讶',
+    '震惊',
+    '意外',
+    '困惑',
+    '疑惑',
+    '厌恶',
+    '讨厌',
+    '反感',
+    '嫌弃',
+    '不喜欢',
+    '平静',
+    '满足',
+    '放松',
+    '安心',
+    '舒适',
   ];
-  
-  const allAnswers = interviewHistory.map(record => record.answer).join('');
-  
-  const foundEmotions = emotionKeywords.filter(emotion => allAnswers.includes(emotion));
-  
+
+  const allAnswers = interviewHistory.map((record) => record.answer).join('');
+
+  const foundEmotions = emotionKeywords.filter((emotion) => allAnswers.includes(emotion));
+
   if (foundEmotions.length === 0) {
     return '复杂的情绪状态';
   }
-  
+
   const limitedEmotions = foundEmotions.slice(0, 3);
-  
+
   if (limitedEmotions.length === 1) {
     return limitedEmotions[0];
-  } else if (limitedEmotions.length === 2) {
-    return `${limitedEmotions[0]}和${limitedEmotions[1]}`;
-  } else {
-    return `${limitedEmotions[0]}、${limitedEmotions[1]}和${limitedEmotions[2]}`;
   }
+
+  if (limitedEmotions.length === 2) {
+    return `${limitedEmotions[0]}和${limitedEmotions[1]}`;
+  }
+
+  return `${limitedEmotions[0]}、${limitedEmotions[1]}和${limitedEmotions[2]}`;
 }
 
 export default new RTCClient();
