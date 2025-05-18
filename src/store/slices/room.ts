@@ -100,6 +100,21 @@ export interface RoomState {
       definite: boolean;
     };
   };
+  
+  /**
+   * @brief 会话开始时间
+   */
+  sessionStartTime?: number;
+  
+  /**
+   * @brief 访谈是否已结束
+   */
+  isInterviewFinished: boolean;
+  
+  /**
+   * @brief 最终报告文本
+   */
+  reportText?: string;
 }
 
 const initialState: RoomState = {
@@ -124,12 +139,22 @@ const initialState: RoomState = {
 
   msgHistory: [],
   currentConversation: {},
+  
+  sessionStartTime: undefined,
+  isInterviewFinished: false,
+  reportText: undefined,
 };
 
 export const roomSlice = createSlice({
   name: 'room',
   initialState,
   reducers: {
+    setInterviewFinished: (state, { payload }) => {
+      state.isInterviewFinished = payload.isInterviewFinished;
+    },
+    setReportText: (state, { payload }) => {
+      state.reportText = payload.reportText;
+    },
     localJoinRoom: (
       state,
       {
@@ -147,6 +172,10 @@ export const roomSlice = createSlice({
         ...payload.user,
       };
       state.isJoined = true;
+      
+      if (!state.sessionStartTime) {
+        state.sessionStartTime = Date.now();
+      }
     },
     localLeaveRoom: (state) => {
       state.roomId = undefined;
@@ -296,6 +325,9 @@ export const roomSlice = createSlice({
       state.msgHistory = [];
       state.isAITalking = false;
       state.isUserTalking = false;
+      state.sessionStartTime = undefined;
+      state.isInterviewFinished = false;
+      state.reportText = undefined;
     },
   },
 });
@@ -322,6 +354,8 @@ export const {
   setInterruptMsg,
   updateNetworkQuality,
   updateScene,
+  setInterviewFinished,
+  setReportText,
 } = roomSlice.actions;
 
 export default roomSlice.reducer;
