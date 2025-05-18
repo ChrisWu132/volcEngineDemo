@@ -11,11 +11,23 @@ import { useJoin } from '@/lib/useCommon';
 import style from './index.module.less';
 import MainBackground from '@/assets/img/main_background.png';
 import RobotImage from '@/assets/img/robot.png';
+import { Button } from '@arco-design/web-react';
+import { useSelector } from 'react-redux';
+import ReportModal from '@/components/ReportModal';
+import { useState, useEffect } from 'react';
 
 function Antechamber() {
   const [joining, dispatchJoin] = useJoin();
+  const [reportModalVisible, setReportModalVisible] = useState(false);
   const username = aigcConfig.BaseConfig.UserId;
   const roomId = aigcConfig.BaseConfig.RoomId;
+  const { isInterviewFinished, reportText } = useSelector((state: any) => state.room);
+
+  useEffect(() => {
+    if (isInterviewFinished && reportText) {
+      setReportModalVisible(true);
+    }
+  }, [isInterviewFinished, reportText]);
 
   const handleJoinRoom = () => {
     if (!joining) {
@@ -28,6 +40,10 @@ function Antechamber() {
         false
       );
     }
+  };
+  
+  const handleViewReport = () => {
+    setReportModalVisible(true);
   };
 
   return (
@@ -57,9 +73,23 @@ function Antechamber() {
           </div>
           
           <InvokeButton onClick={handleJoinRoom} loading={joining} className={style['invoke-btn']} />
+          {isInterviewFinished && (
+            <Button 
+              type="outline" 
+              className={style.reportButton} 
+              onClick={handleViewReport}
+            >
+              查看报告
+            </Button>
+          )}
           <AvatarCard className={`${style.avatar} ${Utils.isMobile() ? style.mobile : ''}`} />
         </div>
       </div>
+      
+      <ReportModal 
+        visible={reportModalVisible} 
+        onClose={() => setReportModalVisible(false)} 
+      />
     </div>
   );
 }

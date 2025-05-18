@@ -151,6 +151,9 @@ export class RTCClient {
         '报告已生成，您可以点击查看报告按钮查看详细内容。'
       );
       
+      const modalController = require('./modalController').default;
+      modalController.openReportModal();
+      
       await this.stopAudioBot();
       
     } catch (error) {
