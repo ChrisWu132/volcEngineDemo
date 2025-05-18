@@ -78,6 +78,7 @@ export const MessageTypeCode = {
 
 export const useMessageHandler = () => {
   const dispatch = useDispatch();
+  let lastBotQuestion = '';
 
   const maps = {
     /**
@@ -115,6 +116,30 @@ export const useMessageHandler = () => {
       if (data) {
         const { text: msg, definite, userId: user, paragraph } = data;
         logger.debug('handleRoomBinaryMessageReceived', data);
+        
+        const isBot = user === RtcClient.config?.botName || user === 'RobotMan_';
+        
+        if (isBot) {
+          if (definite) {
+            lastBotQuestion = msg;
+          }
+        } else {
+          const state = (window as any).store?.getState()?.room;
+          const sessionStartTime = state?.sessionStartTime;
+          const currentTime = Date.now();
+          
+          if (sessionStartTime && (currentTime - sessionStartTime >= 10 * 60 * 1000)) {
+            RtcClient.commandAudioBot(
+              COMMAND.EXTERNAL_TEXT_TO_SPEECH,
+              INTERRUPT_PRIORITY.HIGH,
+              '我们的访谈时间已经到了，我将为您生成一份总结报告。'
+            );
+            
+            RtcClient.endInterviewAndGenerateReport();
+            return;
+          }
+        }
+        
         if ((window as any)._debug_mode) {
           dispatch(setHistoryMsg({ msg, user, paragraph, definite }));
         } else {

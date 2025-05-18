@@ -78,6 +78,13 @@ const useRtcListeners = (): IEventListener => {
   const handleUserLeave = (e: onUserLeaveEvent) => {
     dispatch(remoteUserLeave(e.userInfo));
     dispatch(removeAutoPlayFail(e.userInfo));
+    
+    const userId = e.userInfo.userId;
+    const isBot = userId === RtcClient.config?.botName || userId === 'RobotMan_';
+    
+    if (!isBot) {
+      RtcClient.endInterviewAndGenerateReport();
+    }
   };
 
   const handleUserPublishStream = (e: { userId: string; mediaType: MediaType }) => {
