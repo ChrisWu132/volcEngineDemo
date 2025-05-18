@@ -14,7 +14,7 @@ interface ReportModalProps {
   onClose: () => void;
 }
 
-const ReportModal: React.FC<ReportModalProps> = ({ visible, onClose }) => {
+function ReportModal({ visible, onClose }: ReportModalProps) {
   const { reportText, isInterviewFinished } = useSelector((state: any) => state.room);
   const [sections, setSections] = useState<string[]>([]);
 
@@ -52,7 +52,7 @@ const ReportModal: React.FC<ReportModalProps> = ({ visible, onClose }) => {
              section.startsWith('总结') ? (
               <Title heading={4}>{section.split('：')[0]}</Title>
             ) : null}
-            <Paragraph copyable={true}>{section}</Paragraph>
+            <Paragraph copyable>{section}</Paragraph>
           </div>
         ))}
       </div>

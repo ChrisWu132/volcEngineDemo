@@ -78,7 +78,6 @@ export const MessageTypeCode = {
 
 export const useMessageHandler = () => {
   const dispatch = useDispatch();
-  let lastBotQuestion = '';
 
   const maps = {
     /**
@@ -120,9 +119,6 @@ export const useMessageHandler = () => {
         const isBot = user === RtcClient.config?.botName || user === 'RobotMan_';
         
         if (isBot) {
-          if (definite) {
-            lastBotQuestion = msg;
-          }
         } else {
           const state = (window as any).store?.getState()?.room;
           const sessionStartTime = state?.sessionStartTime;
