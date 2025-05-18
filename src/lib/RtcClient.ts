@@ -88,6 +88,77 @@ export class RTCClient {
   audioBotEnabled = false;
 
   audioBotStartTime = 0;
+  
+  botName = 'RobotMan_';
+  
+  /**
+   * @brief 结束访谈并生成报告
+   */
+  endInterviewAndGenerateReport = async () => {
+    const state = (window as any).store?.getState()?.room;
+    
+    if (state?.isInterviewFinished) {
+      return;
+    }
+    
+    (window as any).store?.dispatch({
+      type: 'room/setInterviewFinished',
+      payload: { isInterviewFinished: true }
+    });
+    
+    const msgHistory = state?.msgHistory || [];
+    let promptText = `请根据以下对话内容，生成一份情绪访谈报告。报告应包含以下部分：
+1. 情绪概况：分析用户表达的主要情绪状态
+2. 关键问题：总结用户面临的主要问题或困扰
+3. 建议：提供3-5条有针对性的建议
+4. 总结：对整体情况的简短总结
+
+对话内容：\n`;
+    
+    msgHistory.forEach((msg: any) => {
+      const role = msg.user === this.botName ? "AI" : "用户";
+      promptText += `${role}: ${msg.text || msg.value}\n`;
+    });
+    
+    try {
+      const response = await fetch('/api/aigc/generate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          appId: aigcConfig.BaseConfig.AppId,
+          businessId: aigcConfig.BaseConfig.BusinessId,
+          prompt: promptText,
+        }),
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to generate report');
+      }
+      
+      const data = await response.json();
+      const reportText = data?.Result?.Content || '无法生成报告，请稍后再试。';
+      
+      (window as any).store?.dispatch({
+        type: 'room/setReportText',
+        payload: { reportText }
+      });
+      
+      this.commandAudioBot(
+        COMMAND.EXTERNAL_TEXT_TO_SPEECH,
+        INTERRUPT_PRIORITY.HIGH,
+        '报告已生成，您可以点击查看报告按钮查看详细内容。'
+      );
+      
+      await this.stopAudioBot();
+      
+    } catch (error) {
+      console.error('Error generating report:', error);
+      
+      await this.stopAudioBot();
+    }
+  };
 
   createEngine = async (props: EngineOptions) => {
     this.config = props;
