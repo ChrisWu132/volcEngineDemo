@@ -116,7 +116,7 @@ export const useMessageHandler = () => {
         const { text: msg, definite, userId: user, paragraph } = data;
         logger.debug('handleRoomBinaryMessageReceived', data);
         
-        const isBot = user === RtcClient.config?.botName || user === 'RobotMan_';
+        const isBot = user === 'RobotMan_' || user === RtcClient.botName;
         
         if (isBot) {
         } else {
