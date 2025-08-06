@@ -1,0 +1,116 @@
+## Backend Architecture Analysis
+Based on the provided code snippets, I will analyze the backend architecture of this RTC-AIGC demo application. This application adopts a front-end and back-end separation architecture, where the backend mainly serves as a proxy server, responsible for handling communication with the Volcengine AIGC service.
+
+### 1. Overall Backend Architecture
+**Frontend Client (React App) --API Request--> Proxy Server (Node.js/Koa) --Signed Request--> Volcengine AIGC API**
+**Volcengine AIGC API --Response--> Proxy Server (Node.js/Koa) --Forward Response--> Frontend Client (React App)**
+
+The backend uses a simple proxy model with the main responsibilities being:
+- Receiving API requests from the frontend.
+- Signing requests using AK/SK.
+- Forwarding requests to the Volcengine AIGC service.
+- Returning the response to the frontend.
+
+### 2. Backend File Structure
+The backend code is relatively simple and is mainly concentrated in the `Server` directory:
+- `Server/app.js` - The main server file.
+  - Uses the Koa framework to create an HTTP server.
+  - Handles CORS cross-domain requests.
+  - Implements the logic for proxying API requests `app.js:6-13`.
+
+### 3. Core Component Analysis
+#### 3.1 Koa Application Server
+The backend uses Koa.js as the web framework and has configured the necessary middleware:
+- **Koa Application Structure (Text Version):**
+  - Koa Application
+    - body-parser middleware (parses request body)
+    - cors middleware (handles cross-domain)
+    - Request handler (handles API proxy)
+- **Koa application initialization:** Creates a Koa instance and configures middleware `app.js:6-16`.
+- **Request body parsing:** Uses the `koa-bodyparser` middleware to parse JSON request bodies `app.js:32`.
+
+#### 3.2 Account Authentication Configuration
+The server requires Volcengine's AK/SK for API authentication:
+- **Account information configuration:** Configure AK/SK in the `ACCOUNT_INFO` object `app.js:21-30`.
+
+#### 3.3 API Proxy Implementation
+The core function is to proxy the frontend's AIGC API requests:
+- **Request handling logic:** Handles POST requests to the `/proxyAIGCFetch` path `app.js:35-42`.
+- **Request signing:** Uses `@volcengine/openapi`'s `Signer` to sign requests `app.js:46-60`.
+- **Request forwarding:** Uses `node-fetch` to forward the signed request to the Volcengine API `app.js:62-69`.
+
+### 4. API Communication Flow
+**API Communication Flow (Text Version):**
+- Frontend Client -> Proxy Server: `POST /proxyAIGCFetch`
+- Proxy Server: Parses request parameters and body.
+- Proxy Server: Signs the request using AK/SK.
+- Proxy Server -> Volcengine API: Forwards the signed request.
+- Volcengine API -> Proxy Server: Returns the API response.
+- Proxy Server -> Frontend Client: Forwards the API response.
+
+#### 4.1 Frontend Request Initiation
+The frontend initiates requests through the `requestPostMethod` function in `src/app/base.ts`: `base.ts:36-52`.
+
+#### 4.2 Backend Request Handling
+After receiving the request, the backend extracts the parameters and prepares for forwarding: `app.js:39-58`.
+
+#### 4.3 Request Signing and Forwarding
+The request is signed using `Signer` and then forwarded to the Volcengine API: `app.js:59-67`.
+
+### 5. AIGC Service Integration
+The backend proxy server supports three main AIGC API operations:
+- **AIGC API Operations (Text Version):**
+  - Proxy Server
+    - StartVoiceChat (starts AI voice chat)
+    - UpdateVoiceChat (controls AI behavior)
+    - StopVoiceChat (stops AI voice chat)
+These API operations are defined in the frontend's `src/app/type.ts`.
+
+### 6. Frontend-Backend Interaction
+The frontend interacts with the backend through the `RTCClient` class:
+- **RTCClient and API Interaction (Text Version):**
+  - RTCClient Class
+    - `startAudioBot()` --> `StartVoiceChat` API
+    - `stopAudioBot()` --> `StopVoiceChat` API
+    - `commandAudioBot()` --> `UpdateVoiceChat` API
+    - `updateAudioBot()` --> `UpdateVoiceChat` API
+
+#### 6.1 Starting AI Voice Chat
+The frontend starts the AI voice chat via the `startAudioBot` method: `RtcClient.ts:352-375`.
+
+#### 6.2 Interrupt Handling
+The frontend can send interrupt commands, with different interrupt types and priorities defined by the `COMMAND` and `INTERRUPT_PRIORITY` enums.
+
+### 7. Message Handling Flow
+The frontend manages message state through Redux, handling AI responses: `room.ts:230-238`.
+- **Message history update logic:** `room.ts:239-277`.
+
+### 8. Binary Message Handling
+The system supports TLV format binary message processing.
+
+## Frontend and Backend Architecture Integration
+Integrating the frontend and backend architectures, the overall system architecture is as follows:
+- **System Overall Architecture (Text Version):**
+  - Frontend (React)
+    - UI Components
+    - State Management (Redux)
+    - RTC Client
+    - Config Factory
+  - Backend (Node.js/Koa)
+    - Proxy Server
+    - Request Signing
+  - Volcengine Services
+    - RTC Service
+    - Speech Recognition Service (ASR)
+    - Large Language Model Service (LLM)
+    - Text-to-Speech Service (TTS)
+- **Data Flow:**
+  - UI Component --> State Management --> RTC Client --> Proxy Server --> Request Signing --> Volcengine Service
+  - RTC Client --> RTC Service
+
+## Conclusion
+This RTC-AIGC demo application adopts a front-end and back-end separation architecture:
+- **Frontend:** Uses React to build the UI, Redux for state management, and communicates with the backend via `RTCClient`.
+- **Backend:** Uses Node.js/Koa to implement a simple proxy server, mainly responsible for request signing and forwarding.
+- **External Services:** Relies on Volcengine's RTC, ASR, LLM, and TTS services to provide core functionality.
+The main responsibility of the backend is to protect sensitive information such as AK/SK and provide a unified API interface for the frontend. The core logic of the entire system is mainly implemented on the frontend, with the backend being relatively simple, primarily serving as a proxy and for authentication.

@@ -1,0 +1,92 @@
+/**
+ * Copyright 2025 Beijing Volcano Engine Technology Co., Ltd. All Rights Reserved.
+ * SPDX-license-identifier: BSD-3-Clause
+ */
+
+.wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .btn {
+        width: 100%;
+        height: 52px;
+        border-radius: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #2F3E5C; /* 深蓝色 */
+        box-shadow: 0px 4px 10px rgba(47, 62, 92, 0.4);
+        transition: all 0.2s ease-in-out;
+        
+        .icon {
+            position: relative;
+        }
+        
+        .buttonText {
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+    }
+
+    .text {
+        margin-top: 12px;
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 14px;
+    }
+}
+
+.cursor {
+    cursor: pointer;
+}
+
+.cursor:hover .btn {
+    background: #3B4B6E;
+    box-shadow: 0px 6px 12px rgba(59, 75, 110, 0.5);
+    transform: translateY(-1px);
+    transition: all 0.2s ease;
+}
+
+.cursor:active .btn {
+    background: #263145;
+    box-shadow: 0px 2px 6px rgba(38, 49, 69, 0.5);
+    transform: translateY(1px);
+    transition: all 0.1s ease;
+}
+
+.loader {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.loadingText {
+    color: white;
+    font-size: 18px;
+    font-weight: 500;
+    margin-right: 12px;
+}
+
+.dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: white;
+    animation: glow 0.9s infinite;
+}
+
+@keyframes glow {
+    0% {
+        opacity: 1;
+    }
+    40% {
+        opacity: 0.7;
+    }
+    100% {
+        opacity: 0.3;
+    }
+}

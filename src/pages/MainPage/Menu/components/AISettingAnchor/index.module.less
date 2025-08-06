@@ -1,0 +1,44 @@
+/**
+ * Copyright 2025 Beijing Volcano Engine Technology Co., Ltd. All Rights Reserved.
+ * SPDX-license-identifier: BSD-3-Clause
+ */
+
+.row {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    cursor: pointer;
+
+    .firstPart {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      width: 90%;
+      color: var(--text-color-text-2, var(--text-color-text-2, #42464E));
+      text-align: center;
+
+      font-family: "PingFang SC";
+      font-size: 13px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 22px;
+      letter-spacing: 0.039px;
+    }
+
+    .finalPart {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      width: 10%;
+      justify-content: flex-end;
+
+      .rightOutlined {
+        font-size: 12px;
+      }
+    }
+
+    .icon {
+      margin-right: 4px;
+    }
+}

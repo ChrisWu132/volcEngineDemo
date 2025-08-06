@@ -1,0 +1,159 @@
+---
+description: ""
+globs: 
+alwaysApply: false
+---
+# Cursor Context Rules: rtc-aigc-demo Frontend
+
+I will provide a more detailed analysis of the file structure to present the frontend organizational structure of this RTC-AIGC demo application in text form.
+
+## Project File Structure Overview
+This project is a React-based frontend application that primarily implements the combination of RTC (Real-Time Communication) and AIGC (AI Generated Content). The following is the main file structure:
+
+### 1. Main Page Components
+- `src/pages/MainPage/index.tsx` - Main page container component
+  - This is the main entry page of the entire application, containing the two main sub-components `MainArea` and `Menu`.
+- `src/pages/MainPage/MainArea/index.tsx` - Main content area component
+  - Contains `AvatarCard` and `Room` components.
+  - Responsible for displaying the AI avatar and video call area.
+- `src/pages/MainPage/Menu/index.tsx` - Menu component
+  - Displays system information, predefined questions, and action buttons.
+  - Contains version information, room ID, and a list of preset questions `index.tsx:50-56`.
+
+### 2. Core Functional Components
+#### 2.1 AI-related Components
+- `src/components/AvatarCard/index.tsx` - AI avatar card component
+  - Displays the AI avatar image.
+  - Shows the current AI configuration information (scene, voice type, model information).
+  - Includes a "Modify AI Settings" button to open the `AISettings` drawer `index.tsx:43-48`.
+- `src/components/AISettings/index.tsx` - AI settings component
+  - Implemented as a drawer interface.
+  - Contains configuration options such as scene selection, model mode selection, and voice selection.
+  - Provides customization for system prompts and welcome messages `index.tsx:184-192`.
+- `src/components/CheckIcon/index.tsx` - Scene selection icon component
+  - Used for scene selection in `AISettings`.
+  - Displays the scene icon, name, and selection status.
+- `src/components/TitleCard/index.tsx` - Title card component
+  - Used for displaying titles in various configuration areas of `AISettings`.
+  - Provides a uniform title style.
+- `src/components/CheckBoxSelector/index.tsx` - Checkbox selector component
+  - Used for voice and model selection in `AISettings`.
+  - Provides a selection interface with icons and descriptions.
+
+#### 2.2 Video-related Components
+- `src/pages/MainPage/MainArea/Room/index.tsx` - Room component
+  - Manages the state and layout of the video call room.
+  - Contains the `CameraArea` component.
+- `src/pages/MainPage/MainArea/Room/CameraArea.tsx` - Camera area component
+  - Displays the local camera or screen sharing content.
+  - Provides camera/screen sharing control functions.
+- `src/pages/MainPage/Menu/components/Operation.tsx` - Operation component
+  - Provides control buttons for microphone, camera, screen sharing, etc.
+  - Located at the bottom of the `Menu` component.
+
+### 3. Configuration and Utility Files
+- `src/config/common.ts` - Common configuration file
+  - Defines enums for scenes (`SCENE`), model modes (`MODEL_MODE`), AI models (`AI_MODEL`), etc.
+  - Contains voice types (`VOICE_TYPE`) and voice information mapping (`VOICE_INFO_MAP`).
+  - Defines default prompts, welcome messages, models, and voices for each scene `common.ts:33-56`.
+- `src/config/config.ts` - Configuration factory class
+  - Implements the `ConfigFactory` class to generate AI configurations.
+  - Includes methods for generating `LLMConfig`, `ASRConfig`, `TTSConfig`, etc.
+  - Provides an `aigcConfig` method to integrate all configurations `config.ts:224-243`.
+- `src/utils/utils.ts` - Utility functions file
+  - Contains utility functions like `isMobile()`.
+  - Provides various helper functions.
+- `src/utils/handler.ts` - Handler file
+  - Defines constants like `COMMAND` and `INTERRUPT_PRIORITY`.
+  - Used for handling AI commands and interrupt priorities.
+
+### 4. State Management Files
+- `src/store/index.ts` - Redux store root file
+  - Configures the Redux store.
+  - Combines all reducers.
+- `src/store/slices/room.ts` - Room state slice
+  - Manages room state, including scene, model mode, AI configuration, etc.
+  - Provides actions like `updateScene`, `updateModelMode`, `updateAIConfig`.
+- `src/lib/RtcClient.ts` - RTC client class
+  - Encapsulates interaction with the RTC service.
+  - Provides methods like `updateAudioBot` and `commandAudioBot`.
+- `src/lib/useCommon.ts` - Common hooks file
+  - Provides custom hooks like `useVisionMode`, `useDeviceState`.
+  - Simplifies state management in components.
+
+### 5. Style Files
+- `src/components/AISettings/index.module.less` - AI settings component styles
+  - Defines styles for the drawer container, scene selection, configuration areas, etc. `index.module.less:6-36`.
+- `src/components/AvatarCard/index.module.less` - Avatar card styles
+  - Defines styles for the card, avatar, text area, etc.
+- `src/pages/MainPage/Menu/index.module.less` - Menu styles
+  - Defines styles for the wrapper, information box, question list, etc.
+- `src/pages/MainPage/MainArea/Room/index.module.less` - Room styles
+  - Defines room layout and video display area styles.
+
+## Detailed Component Relationships
+### 1. Page Hierarchy
+```
+MainPage
+├── MainArea
+│   ├── AvatarCard
+│   │   └── AISettings (Drawer, conditionally rendered)
+│   └── Room
+│       └── CameraArea
+└── Menu
+    └── Operation
+```
+
+### 2. Data Flow
+- **Configuration Data Flow:**
+  - User modifies configuration via the `AISettings` component.
+  - `AISettings` updates configuration values in `ConfigFactory`.
+  - `AISettings` updates the global state via Redux.
+  - `AISettings` calls `RtcClient.updateAudioBot()` to apply the configuration.
+  - `AvatarCard` reads and displays the latest configuration from Redux.
+- **Interaction Data Flow:**
+  - User clicks a predefined question in the `Menu`.
+  - `Menu` calls `RtcClient.commandAudioBot()` to send a command.
+  - `Menu` updates the message history via Redux.
+  - The system processes the AI response and updates the state.
+
+### 3. Device Control Flow
+- **Camera Control:**
+  - User controls the camera via the `Operation` component or a prompt button in `CameraArea`.
+  - `CameraArea` displays the corresponding content after the state is updated.
+- **Scene and Device Linkage:**
+  - When a scene with a visual understanding model is selected (`TEACHING_ASSISTANT` or `SCREEN_READER`), `AISettings` automatically configures the video source type and controls the enabling/disabling of the camera or screen sharing.
+
+## Modifiable Components and Files
+### 1. Modify Predefined Questions
+- **File:** `src/config/common.ts`
+  - Find the `Questions` object and modify the preset question arrays for each scene.
+
+### 2. Modify AI Scenes
+- **File:** `src/config/common.ts`
+  - Modify the `SCENE` enum to add new scenes.
+  - Add corresponding configurations in the `Name`, `Icon`, `Prompt`, `Welcome`, `Voice`, and `Model` mappings.
+- **File:** `src/components/AISettings/index.tsx`
+  - Modify the `SCENES` array to add or remove scene options `index.tsx:214-231`.
+
+### 3. Modify AI Voice Tones
+- **File:** `src/config/common.ts`
+  - Modify the `VOICE_TYPE` enum to add new voice tones.
+  - Add corresponding voice information in `VOICE_INFO_MAP`.
+
+### 4. Modify AI Models
+- **File:** `src/config/common.ts`
+  - Modify the `AI_MODEL` enum to add new models.
+  - Adjust the `MODEL_MODE` enum to change the model source type.
+
+### 5. Modify UI Interface
+- **File:** `src/components/AvatarCard/index.tsx`
+  - Modify the display content and style of the avatar card `index.tsx:55-63`.
+- **File:** `src/pages/MainPage/Menu/index.tsx`
+  - Modify the information display and question list in the menu `index.tsx:80-86`.
+- **File:** `src/components/AISettings/index.tsx`
+  - Modify the configuration options and layout of the AI settings drawer `index.tsx:452-477`.
+
+### 6. Modify Video Display
+- **File:** `src/pages/MainPage/MainArea/Room/CameraArea.tsx`
+  - Modify the display and control logic of the camera area.

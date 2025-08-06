@@ -1,0 +1,19 @@
+{
+  "name": "AIGCServer",
+  "version": "1.0.0",
+  "description": "Server for demo to call open api",
+  "main": "app.js",
+  "license": "BSD-3-Clause",
+  "private": true,
+  "dependencies": {
+    "@volcengine/openapi": "^1.22.0",
+    "dotenv": "^16.5.0",
+    "koa": "^2.15.3",
+    "koa-bodyparser": "^4.4.1",
+    "koa2-cors": "^2.0.6",
+    "node-fetch": "^2.3.2"
+  },
+  "scripts": {
+    "dev": "node app.js"
+  }
+}

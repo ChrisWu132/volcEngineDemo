@@ -1,0 +1,98 @@
+/**
+ * Copyright 2025 Beijing Volcano Engine Technology Co., Ltd. All Rights Reserved.
+ * SPDX-license-identifier: BSD-3-Clause
+ */
+
+.noStyle {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+
+  .icon {
+    margin-right: 12px;
+    width: 48px;
+    height: 48px;
+  }
+  .content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+
+    .label {
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 22px;
+    }
+
+    .description {
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 20px;
+      text-align: left;
+    }
+  }
+}
+
+
+
+.wrapper {
+  width: 260px;
+  height: 88px;
+  padding: 3px 16px 3px 16px;
+  border-radius: 12px;
+  border: 1px solid;
+  
+  border-color: rgba(22, 100, 255, 0.3);
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  cursor: pointer;
+
+  .icon {
+    border-radius: 50%;
+    margin-right: 12px;
+    width: 48px;
+    height: 48px;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+
+    .label {
+      font-family: PingFang SC;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 22px;
+    }
+
+    .description {
+      font-family: PingFang SC;
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 20px;
+      text-align: left;
+    }
+  }
+}
+
+.wrapper:hover {
+  box-shadow: 0px 5px 6px 0px rgba(82, 102, 133, 0.15);
+}
+
+.active {
+  position: relative;
+  border: 1px solid;
+  border-color: rgba(0, 104, 255, 1);
+
+  .checkIcon {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+  }
+}

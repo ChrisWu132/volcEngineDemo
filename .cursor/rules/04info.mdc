@@ -1,0 +1,106 @@
+As a programmer who has just taken over this RTC-AIGC demo application, in addition to the front-end and back-end architecture analyzed earlier, here is some other important information to know:
+
+### 1. Project Configuration and Environmental Requirements
+- **Node Version Requirement:** The project requires Node 16.0+ `README.md:9`
+- **Project Version:** The current version is 1.6.0 `package.json:3`
+- **RTC SDK Version:** The project uses version 4.66.1 `package.json:8`
+
+### 2. Key Configuration Files and Required Parameters
+Before starting development, you need to configure the following key parameters:
+- **Frontend Configuration (`src/config/config.ts`):**
+  - RTC AppId, RoomId, UserId, and Token
+  - TTS (Text-to-Speech) AppId and Token
+  - ASR (Automatic Speech Recognition) AppId and Token `config.ts:30-78`
+- **Backend Configuration (`Server/app.js`):**
+  - AK/SK of the Volcengine account `app.js:21-30`
+- **Model Configuration (`src/config/common.ts`):**
+  - If using an official model, `ARK_V3_MODEL_ID` needs to be configured.
+
+### 3. Startup Process
+The project requires starting both the frontend and backend services simultaneously:
+- **Backend Service:**
+  ```shell
+  cd Server
+  yarn
+  node app.js
+  ```
+- **Frontend Service:**
+  ```shell
+  yarn
+  yarn dev
+  ```
+
+### 4. Core Functionality Implementation Details
+#### 4.1 RTC Client Initialization Process
+The initialization process of the RTC client is implemented in the `disPatchJoin` function in `useCommon.ts`. The main steps include:
+- Checking browser compatibility
+- Creating the RTC engine
+- Registering event listeners
+- Joining the room
+- Getting device information
+- Starting audio/video capture
+- Starting AI voice chat `useCommon.ts:183-267`
+
+#### 4.2 AI Interaction Command System
+The system implements a command system to control AI behavior:
+- `COMMAND` enum: Defines available command types, such as `INTERRUPT`, `EXTERNAL_TEXT_TO_SPEECH`, etc.
+- `INTERRUPT_PRIORITY` enum: Defines interrupt priorities for handling concurrent commands.
+
+#### 4.3 Message History Management
+The system uses Redux to manage message history, implementing complex logic for appending and updating messages:
+- Differentiating between Bot and user messages
+- Handling message completeness flags (`definite` and `paragraph`)
+- Supporting message appending and updating.
+
+### 5. Common Issues and Solutions
+The README lists some common problems and solutions, including:
+- No feedback after starting the agent: Could be a permission issue, parameter error, or resource shortage.
+- Token error: Check if `RoomId`, `UserId`, and `Token` match.
+- Device permission issues: The browser may be blocking device access.
+- Third-party model integration issues: A validation tool can be used to locate the cause.
+
+### 6. Extension and Customization
+#### 6.1 Adding a New AI Scene
+To add a new AI scene, you need to modify the following files:
+- `src/config/common.ts`: Add the new scene to the `SCENE` enum and add configurations in the relevant mappings (Name, Icon, Prompt, etc.).
+- `src/components/AISettings/index.tsx`: Add the new scene to the `SCENES` array.
+
+#### 6.2 Integrating a New Model Source
+The system supports three model modes: official, Coze, and third-party. To add a new model source, you need to modify:
+- `src/config/common.ts`: Add the new mode to the `MODEL_MODE` enum.
+- `src/components/AISettings/index.tsx`: Add UI and handling logic for the new mode `index.tsx:245-323`.
+
+#### 6.3 Adding a New Voice
+To add a new voice, you need to modify the `VOICE_TYPE` enum and `VOICE_INFO_MAP` mapping in `src/config/common.ts`.
+
+### 7. Performance and Optimization Considerations
+#### 7.1 Mobile Device Adaptation
+The system uses `utils.isMobile()` to detect mobile devices and provides different UI layouts and functions for them:
+- Drawer component width adjustment.
+- Scene selection layout adjustment.
+- Special handling of the camera area on mobile devices.
+
+#### 7.2 Video Processing Optimization
+The system automatically switches the video source type (camera or screen sharing) based on the scene type and implements related linkage logic in `AISettings`: `index.tsx:148-166`.
+
+### 8. Debugging Tips
+- **Check API requests:** You can monitor `/proxyAIGCFetch` requests in the browser's developer tools to view request parameters and responses.
+- **Redux DevTools:** Use the Redux DevTools extension to view state changes.
+- **Log output:** The system has added `console.log` at key locations to help understand the flow.
+
+### 9. Documentation Resources
+The README provides some useful documentation links:
+- Scene Introduction
+- Demo Experience
+- Scene Construction Plan
+- OpenAPI Updates
+
+### 10. Recent Updates and Changes
+Recent updates to the project (v1.6.0) include:
+- Support for Coze Bot.
+- Updated some comments and documentation content.
+- Removed SessionToken configuration for sub-accounts.
+- Fixed an issue where content modified before a call would disappear after the call `README.md:68-72`.
+
+### Notes
+This RTC-AIGC demo application is a complete example that integrates real-time communication and AI-generated content, mainly used to demonstrate how to use Volcengine's RTC, ASR, LLM, and TTS services to build interactive AI applications. As a new developer, understanding the project's configuration requirements, startup process, core function implementation, and extension methods is most important. The project structure is clear, with front-end and back-end separation, but it requires correct configuration of various service AppIds, Tokens, and AK/SKs to run properly.
