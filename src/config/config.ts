@@ -230,8 +230,8 @@ export class ConfigFactory {
        * @note 小模型情况下, 建议使用 VAD 及音量采集设置, 以优化识别效果。
        */
       VADConfig: {
-        SilenceTime: 1500,
-        SilenceThreshold: 200,
+        SilenceTime: 2500,
+        SilenceThreshold: 150,
       },
       VolumeGain: 0.3,
     };
